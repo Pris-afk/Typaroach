@@ -24,5 +24,8 @@ void __fastcall TFrmWords::XButtonImgClick(TObject *Sender)
 	FrmMain->Show();
 	//FrmMain->SetFocus();
 
+	if(FrmWords && FrmWords->Visible){ //utk cek formny open / g (visible itu true/false)
+		FrmWords->Close();
+	}
 }
 //---------------------------------------------------------------------------
