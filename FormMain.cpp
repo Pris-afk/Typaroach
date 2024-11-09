@@ -5,11 +5,20 @@
 
 #include "FormMain.h"
 #include "FrmLogin.h"
+#include "FrmShopcpp.h"
+#include "FrmShop2.h"
+#include "FrmShop3.h"
+#include "FrmWord.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TFrmMain *FrmMain;
 TLogin *Login;
+TForm1 *Form1; //FrmShopcpp
+TForm2 *Form2; //FrmShop2
+TForm3 *Form3; //FrmShop3
+TFrmWords *FrmWords;
 //---------------------------------------------------------------------------
 __fastcall TFrmMain::TFrmMain(TComponent* Owner)
 	: TForm(Owner)
@@ -77,7 +86,28 @@ void __fastcall TFrmMain::FormCreate(TObject *Sender)
 void __fastcall TFrmMain::FormKeyPress(TObject *Sender, System::WideChar &Key)
 {
 	switch (Key) {
-	   case 27: Close(); break;
+	   case 27:
+		if(FrmMain->Visible){
+			FrmMain->Close();
+		}
+
+		if(Form1->Visible){ //utk cek formny open / g (visible itu true/false)
+			Form1->Close();
+		}
+
+		if(Form2->Visible){ //utk cek formny open / g (visible itu true/false)
+			Form2->Close();
+		}
+
+		if(Form3->Visible){ //utk cek formny open / g (visible itu true/false)
+			Form3->Close();
+		}
+
+		if(FrmWords->Visible){ //utk cek formny open / g (visible itu true/false)
+			FrmWords->Close();
+		}
+
+	   break;
 	   case '1':
 			Application->OnIdle = MainLoop; break;
 	}
@@ -104,22 +134,27 @@ void __fastcall TFrmMain::FormClose(TObject *Sender, TCloseAction &Action)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFrmMain::Button1Click(TObject *Sender)
-{
-    Login->Show();
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TFrmMain::BtnShopClick(TObject *Sender)
-{
-	Label1->Caption = "2";
-}
-//---------------------------------------------------------------------------
+//NI GJD
 
 void __fastcall TFrmMain::PlayImgClick(TObject *Sender)
 {
-	Label1->Caption = "2";
-	PressedPlay = Buttons->GetImageHandle(1);
-	PlayImg->Picture = PressedPlay;
+	/*PressedPlay = Buttons->GetImageHandle(1);
+	PlayImg->Picture = PressedPlay;    */
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TFrmMain::ShopImgClick(TObject *Sender)
+{
+	Form1->Show();  //FrmShopcpp
+	FrmMain->SendToBack();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmMain::WordsImgClick(TObject *Sender)
+{
+	FrmWords->Show();
+	FrmMain->SendToBack();
 }
 //---------------------------------------------------------------------------
