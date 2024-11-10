@@ -9,7 +9,7 @@
 #include "FrmShop2.h"
 #include "FrmShop3.h"
 #include "FrmWord.h"
-
+#include "FrmLevel.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -19,6 +19,7 @@ TForm1 *Form1; //FrmShopcpp
 TForm2 *Form2; //FrmShop2
 TForm3 *Form3; //FrmShop3
 TFrmWords *FrmWords;
+TFrmLevels *FrmLevels;
 //---------------------------------------------------------------------------
 __fastcall TFrmMain::TFrmMain(TComponent* Owner)
 	: TForm(Owner)
@@ -141,6 +142,8 @@ void __fastcall TFrmMain::PlayImgClick(TObject *Sender)
 {
 	/*PressedPlay = Buttons->GetImageHandle(1);
 	PlayImg->Picture = PressedPlay;    */
+	FrmLevels->Show();  //FrmShopcpp
+	FrmMain->SendToBack();
 }
 //---------------------------------------------------------------------------
 
