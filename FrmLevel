@@ -1,0 +1,52 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+#include <PngImage.hpp>
+
+#include "FrmLevel.h"
+#include "FormMain.h"
+#include "FrmTampilanLevelAwall.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TFrmLevels *FrmLevels;
+TFrmMain *FrmMain;
+TFrmTampilanLevelAwal *FrmTampilanLevelAwal;
+//---------------------------------------------------------------------------
+__fastcall TFrmLevels::TFrmLevels(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TFrmLevels::HomeButtonClick(TObject *Sender)
+{
+	if (!FrmMain) {
+		FrmMain = new TFrmMain(this);
+	}
+	FrmMain->Show();
+	//FrmMain->SetFocus();
+
+	if(FrmLevels && FrmLevels->Visible){ //utk cek formny open / g (visible itu true/false)
+		FrmLevels->Close();
+	}
+}
+//---------------------------------------------------------------------------
+
+int localClick = 0;
+void __fastcall TFrmLevels::Level1LockedClick(TObject *Sender)
+{
+
+	localClick++;
+
+	if (localClick >= 2) {
+		if (!FrmTampilanLevelAwal) {
+		FrmTampilanLevelAwal = new TFrmTampilanLevelAwal (this);
+		}
+		FrmTampilanLevelAwal->Show();
+	} else {
+		Level1Locked->Picture->LoadFromFile("Level Box w\\bmp\\1.bmp");
+	}
+
+}
+//---------------------------------------------------------------------------
