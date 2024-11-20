@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
-#ifndef FormMainH
-#define FormMainH
+#ifndef FrmPlayLevelsH
+#define FrmPlayLevelsH
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
@@ -13,39 +13,45 @@
 #include <Vcl.ImgList.hpp>
 #include <Vcl.Imaging.pngimage.hpp>
 #include <Vcl.Graphics.hpp>
-#include "FrmLogin.h"
-
+#include <Vcl.ComCtrls.hpp>
+#include <Data.DB.hpp>
+#include <Data.Win.ADODB.hpp>
 //---------------------------------------------------------------------------
-class TFrmMain : public TForm
+class TFrmPlayLevel : public TForm
 {
 __published:	// IDE-managed Components
 	TImage *ImgScr;
-	TButton *LoginBtn;
+	TProgressBar *HPBarUser;
+	TProgressBar *ProgressBar1;
+	TADOConnection *KoneksiDB;
+	TADOQuery *QueryWord;
+	TLabel *Label1;
+	TADOTable *TblUserWord;
 	void __fastcall FormCreate(TObject *Sender);
-	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall Button1Click(TObject *Sender);
-	void __fastcall PlayImgClick(TObject *Sender);
-	void __fastcall LoginBtnClick(TObject *Sender);
+	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
 private:	// User declarations
 	tDisplay RoachImg[3][21];
-	tDisplay NewsImg[10];
+	tDisplay NewsImg[10], Letters[2][26];
+	char **WordsDB, WordInput[15], WordOutput[15];
 
-	int PoseNo;
-    int rand;
+	bool WordIsMoving;
+	int PoseNo, lWordInput, WordCount, xWord, yWord, LetterWidth, LetterHeight;
+	int rand, HurufKe;
 	int RoachWidth[3][21], RoachHeight[3][21], SprNo, xRoach, yRoach, TickCount;
 	//int RoachAtkW[21], RoachAtkH[21], RASprNo, xRoachAtk, yRoachAtk, RATickCount;
 	int NewsWidth[10], NewsHeight[10], NSprNo, xNews, yNews, NTickCount;
-    bool Hit, Atk, Hurt;
+	bool Hit, Atk, Hurt;
 
 	Graphics::TBitmap *BM;
-
-	void __fastcall KecoaIdleLoop(TObject *Sender, bool &Done);
+	TLocateOptions LO;
 
 public:		// User declarations
-	__fastcall TFrmMain(TComponent* Owner);
+	void PrepareImages();
+	__fastcall TFrmPlayLevel(TComponent* Owner);
+	void __fastcall MainLoop(TObject *Sender, bool &Done);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TFrmMain *FrmMain;
+extern PACKAGE TFrmPlayLevel *FrmPlayLevel;
 //---------------------------------------------------------------------------
 #endif
