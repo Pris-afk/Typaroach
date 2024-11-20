@@ -3,28 +3,25 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "FormMain.h"
-#include "FrmLogin.h"
+#include "FrmPlayLevels.h"
+#include "CPP2DWinAnimation.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TFrmMain *FrmMain;
-TLogin *Login;
-bool AnimationFinished;
-//---------------------------------------------------------------------------
-__fastcall TFrmMain::TFrmMain(TComponent* Owner)
-	: TForm(Owner)
-{
-}
-//---------------------------------------------------------------------------
-__fastcall TLogin::TLogin(TComponent* Owner)
-	: TForm(Owner)
-{
-}
-//---------------------------------------------------------------------------
-void __fastcall TFrmMain::FormCreate(TObject *Sender)
-{
+TFrmPlayLevel *FrmPlayLevel;
 
+void AnsiToCStr(AnsiString AS, char CStr[])
+{
+ int i, l=AS.Length();
+ for(i=0; i<l; i++)
+  CStr[i]=AS[i+1];
+ CStr[i]=0;
+}
+
+void TFrmPlayLevel::PrepareImages()
+{
+	int i;
 	//get OldScreenResolution
 	//OldScreenWidth = GetSystemMetrics(SM_CXSCREEN);
 	//OldScreenHeight = GetSystemMetrics(SM_CYSCREEN);
@@ -33,6 +30,8 @@ void __fastcall TFrmMain::FormCreate(TObject *Sender)
 	//Prepare form
 	//BorderStyle = bsNone;
 	WindowState = wsNormal;
+
+	strcpy(WordOutput, "aaa");
 
 	//Prepare Screen
 	BackWidth = 1366;
@@ -46,7 +45,6 @@ void __fastcall TFrmMain::FormCreate(TObject *Sender)
 	ImgScr->Left = 0;
 	ImgScr->Width = ScreenWidth;
 	ImgScr->Height = ScreenHeight;
-
 
 	BM = new Graphics::TBitmap;
 	//Back = AllocateObjectMemory(Back, BackWidth * BackHeight * CurrentBytePerPixel);
@@ -96,9 +94,6 @@ void __fastcall TFrmMain::FormCreate(TObject *Sender)
 	//RoachImg[2][8] = LoadImageFromBitmap(RoachImg[2][8], &RoachWidth[2][8], &RoachHeight[2][8], "KecoaDizzy3.bmp");
 	//RoachImg[2][9] = LoadImageFromBitmap(RoachImg[2][9], &RoachWidth[2][9], &RoachHeight[2][9], "KecoaDizzy2.bmp");
 
-
-
-
 	//Newspaper hand
 	NewsImg[0] = LoadImageFromBitmap(NewsImg[0], &NewsWidth[0], &NewsHeight[0], "news1.bmp");
 	NewsImg[1] = LoadImageFromBitmap(NewsImg[1], &NewsWidth[1], &NewsHeight[1], "news2.bmp");
@@ -111,8 +106,14 @@ void __fastcall TFrmMain::FormCreate(TObject *Sender)
 	NewsImg[8] = LoadImageFromBitmap(NewsImg[8], &NewsWidth[8], &NewsHeight[8], "news2.bmp");
 	NewsImg[9] = LoadImageFromBitmap(NewsImg[9], &NewsWidth[9], &NewsHeight[9], "news1.bmp");
 
+	Letters[0][0] = LoadImageFromBitmap(Letters[0][0], &LetterWidth, &LetterHeight, "Letters\\White\\AW.bmp");
+
+	//anggap semuanya huruf A dulu untuk percobaan
+	for(i=1; i<26; i++) Letters[0][i]=Letters[0][0];
+	for(i=0; i<26; i++) Letters[1][i]=Letters[0][0];
+
 	Hit=false;
-    Atk = false;
+	Atk=false;
 
 	PoseNo=0;
 	NSprNo = 0;
@@ -128,43 +129,73 @@ void __fastcall TFrmMain::FormCreate(TObject *Sender)
 	CopyScreenToBitmap(Process, BM, ScreenWidth, ScreenHeight);
 	ImgScr->Picture->Bitmap = BM;
 
-	Application->OnIdle = KecoaIdleLoop;
+	WordIsMoving=false;
+	randomize();
 
-
+	//Application->OnIdle = MainLoop;
 }
 //---------------------------------------------------------------------------
-void __fastcall TFrmMain::FormKeyPress(TObject *Sender, System::WideChar &Key)
+__fastcall TFrmPlayLevel::TFrmPlayLevel(TComponent* Owner)
+	: TForm(Owner)
 {
-	
-	switch (Key) {
-		case 27: Close(); break;
-		case '1':
-			Atk=true;
-			PoseNo=1;
-			break;
-			//Application->OnIdle = KecoaIdleLoop; break;
-		case 13:
-			Hit=true; break;
-			//Application->OnIdle = KecoaIdleLoop;
-			//Application->OnIdle = NewsLoop;
-			//AnimationFinished = false; break;
-			//if (NSprNo == 8) {
-			//	Application->OnIdle = KecoaIdleLoop; break;
-			//}
-
-
-
-	}
 }
 //---------------------------------------------------------------------------
+void __fastcall TFrmPlayLevel::FormCreate(TObject *Sender)
+{
+ int i;
+	KoneksiDB->Close();
+	KoneksiDB->ConnectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=DatabaseTesttttttttPls.mdb;Persist Security Info=False";
+	KoneksiDB->Open();
 
-void __fastcall TFrmMain::KecoaIdleLoop(TObject *Sender, bool &Done){
+	TblUserWord->Connection=KoneksiDB;
+	TblUserWord->TableName="UserWord";
+	TblUserWord->Open();
+	
+	QueryWord->Connection=KoneksiDB;
+	QueryWord->Close();
+	QueryWord->SQL->Clear();
+	QueryWord->SQL->Add("Select * From Word Where WordID Like 'W1%' Order By WordID");
+	QueryWord->Open();
+	QueryWord->ExecSQL();
+
+	WordCount=QueryWord->RecordCount;
+	QueryWord->First();
+	ShowMessage(IntToStr(WordCount));
+	WordsDB=new char * [WordCount];
+	for(i=0; i<WordCount; i++) {
+	 WordsDB[i]=new char [15];
+	 AnsiToCStr(QueryWord->FieldByName("Word")->AsString, WordsDB[i]);
+	 QueryWord->Next();
+	}
+	QueryWord->Close();
+	//KoneksiDB->Close(); //pindahkan ke FormClose
+	PrepareImages();
+	LO<<loCaseInsensitive;
+}
+
+void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
+	int i;
 
 	CopyScreen(Back, Process, ScreenWidth, ScreenHeight);
 	PutImage(RoachImg[PoseNo][SprNo], RoachWidth[PoseNo][SprNo], RoachHeight[PoseNo][SprNo], 900, 430, Process);
 	//PutImage(NewsImg[0], NewsWidth[0], NewsHeight[0], -114, 0, Process);
 	PutImage(NewsImg[NSprNo], NewsWidth[NSprNo], NewsHeight[NSprNo], -120, 0, Process);
 	//PutImage(RoachAtk[SprNo], RoachWidth[SprNo], RoachHeight[SprNo], 990, 450, Process);
+
+   Label1->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + WordOutput;
+   if (WordIsMoving) {
+	   for(i=0; i<3; i++)
+		  PutImage(Letters[0][ WordOutput[i]-97 ], LetterWidth, LetterHeight, xWord+i*LetterWidth, yWord, Process);
+
+	   if (xWord>ScreenWidth/2) xWord--; else WordIsMoving=false;
+   } else {
+	   strcpy(WordOutput, WordsDB[ Random(WordCount) ]);
+	   WordIsMoving=true;
+	   xWord=ScreenWidth-100;
+	   yWord=300;
+	   HurufKe=0;
+   }
+
 	CopyScreenToBitmap(Process, BM, ScreenWidth, ScreenHeight);
 	ImgScr->Picture->Bitmap = BM;
 
@@ -200,21 +231,21 @@ void __fastcall TFrmMain::KecoaIdleLoop(TObject *Sender, bool &Done){
 	//if hand attacks
 	if (TickCount %5 == 0 && Hit) {
 		NSprNo++;
-		/*if(TickCount %10 == 0 && Hurt){//slower kecoa getting hit animation
+		//if(TickCount %10 == 0 && Hurt){//slower kecoa getting hit animation
 			//PoseNo=2;
-			SprNo++;
-		} */
+			//SprNo++;
+		//}
 		if (NSprNo>=9) {
 			NSprNo=0;
 			Hit=false;
 		}
 
 	}
-	
-	
+
+
 	if(PoseNo==1){//if kecoa attack
 		if (TickCount %5 == 0 && Atk) {
-            SprNo++;
+			SprNo++;
 
 			if (SprNo>=20) {
 				PoseNo=0;
@@ -226,135 +257,50 @@ void __fastcall TFrmMain::KecoaIdleLoop(TObject *Sender, bool &Done){
 
 	Done = false;
 	TickCount++;
+}
 
+//---------------------------------------------------------------------------
+void __fastcall TFrmPlayLevel::FormClose(TObject *Sender, TCloseAction &Action)
+{
+	SetScreenResolution(OldScreenWidth, OldScreenHeight);
+}
+//---------------------------------------------------------------------------
+void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &Key)
+{
+	AnsiString Cari;
+	switch (Key) {
+		case 27: Close(); break;
+		case '1':
+			Atk=true;
+			PoseNo=1;
+			break;
+			//Application->OnIdle = KecoaIdleLoop; break;
+		case 13:
+			Hit=true; break;
+			//Application->OnIdle = KecoaIdleLoop;
+			//Application->OnIdle = NewsLoop;
+			//AnimationFinished = false; break;
+			//if (NSprNo == 8) {
+			//	Application->OnIdle = KecoaIdleLoop; break;
+			//}
+		default: 
+			if (Key>='A' && Key<='Z') Key+=32;
+			if (Key>='a' && Key<='z') {
+				WordInput[HurufKe]=Key;
+				HurufKe++;
+				WordInput[HurufKe]=0;
 
-	/*if(PoseNo==1){
-		if (TickCount %5 == 0 && Atk) {
-			SprNo++;
-
-			if (SprNo>=20) {
-				PoseNo=0;
-				SprNo=0;
-				Atk=false;
-			}
-		}
-	}
-
-
-	if (TickCount %4 == 0 && Hit) {
-		NSprNo++;
-		if (NSprNo==5) {
-			Hurt = true;
-			if (SprNo>0) {
-            	SprNo=0;
-			}
-
-			if (Hurt) {
-				PoseNo=2;
-                SprNo++;
-				if (SprNo>=6) {
-					//SprNo=0;
-					PoseNo=0;
-
-					Hurt=false;
+				if (HurufKe==3) {
+				   Cari=WordInput;
+				   if (!TblUserWord->Locate('Word', Cari, LO)) {
+					   TblUserWord->Append();
+					   //TblUserWord->FieldByName("UserID")->AsString=...;
+					   TblUserWord->FieldByName("Word")->AsString=Cari;
+					   TblUserWord->Post();
+				   }
 				}
-				//SprNo=0;
 			}
-
-			/*if(PoseNo==2){
-				SprNo++;
-				if (SprNo>=6) {
-					SprNo=0;
-					PoseNo=0;
-
-					Hurt=false;
-				}
-
-			}*/
-}
-
-
-		/*if (PoseNo==2 && Hurt) {
-			SprNo=0;
-			if (TickCount %25 == 0) {
-				SprNo++;
-			}
-			if (SprNo>=6) {
-				SprNo=0;
-				PoseNo=0;
-
-				Hurt=false;
-			}
-
-		}
-
-
-		if (NSprNo>=9) {
-			NSprNo=0;
-			Hit=false;
-			//Hurt=false;
-		} //atk hand
-		*/
-
-
-
-
-
-	/*if(PoseNo==1){
-		if (TickCount %5== 0 && Atk) {
-			//PoseNo=1;
-			//SprNo=0;
-			SprNo++;
-			//SprNo = (SprNo+1) % 21;
-			if (SprNo>=20) {
-				PoseNo=0;
-				SprNo=0;
-				Atk=false;
-			}
-		}
+			
 	}
-
-	if (NSprNo==5) {
-		PoseNo==2;
-		Hurt = true;
-	}
-
-	if (PoseNo==2) {
-        if (TickCount %25 == 0 && Hurt) {
-			SprNo++;
-            if (SprNo>=20) {
-				PoseNo=0;
-				SprNo=0;
-				Hurt=false;
-			}
-		}
-
-	}*/
-
-
-void __fastcall TFrmMain::FormClose(TObject *Sender, TCloseAction &Action)
-{
-	//SetScreenResolution(OldScreenWidth, OldScreenHeight);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFrmMain::Button1Click(TObject *Sender)
-{
-    Login->Show();
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TFrmMain::PlayImgClick(TObject *Sender)
-{
-
-	//PressedPlay = Buttons->GetImageHandle(1);
-	//PlayImg->Picture = PressedPlay;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFrmMain::LoginBtnClick(TObject *Sender)
-{
-	Login->Show();	
 }
 //---------------------------------------------------------------------------
