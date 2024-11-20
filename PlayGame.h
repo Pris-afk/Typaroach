@@ -13,26 +13,30 @@
 #include <Vcl.ImgList.hpp>
 #include <Vcl.Imaging.pngimage.hpp>
 #include <Vcl.Graphics.hpp>
+#include "FrmLogin.h"
 
 //---------------------------------------------------------------------------
 class TFrmMain : public TForm
 {
 __published:	// IDE-managed Components
 	TImage *ImgScr;
+	TButton *LoginBtn;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall PlayImgClick(TObject *Sender);
+	void __fastcall LoginBtnClick(TObject *Sender);
 private:	// User declarations
-	tDisplay RoachImg[2][21];
-	tDisplay NewsImg[9];
+	tDisplay RoachImg[3][21];
+	tDisplay NewsImg[10];
 
-    int PoseNo;
-	int RoachWidth[2][21], RoachHeight[2][21], SprNo, xRoach, yRoach, TickCount;
+	int PoseNo;
+    int rand;
+	int RoachWidth[3][21], RoachHeight[3][21], SprNo, xRoach, yRoach, TickCount;
 	//int RoachAtkW[21], RoachAtkH[21], RASprNo, xRoachAtk, yRoachAtk, RATickCount;
-	int NewsWidth[9], NewsHeight[9], NSprNo, xNews, yNews, NTickCount;
-    bool Hit, Atk;
+	int NewsWidth[10], NewsHeight[10], NSprNo, xNews, yNews, NTickCount;
+    bool Hit, Atk, Hurt;
 
 	Graphics::TBitmap *BM;
 
