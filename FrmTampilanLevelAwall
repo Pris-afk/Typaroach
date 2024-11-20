@@ -1,34 +1,49 @@
 //---------------------------------------------------------------------------
 
-#ifndef FrmTampilanLevelAwallH
-#define FrmTampilanLevelAwallH
-//---------------------------------------------------------------------------
-#include <System.Classes.hpp>
-#include <Vcl.Controls.hpp>
-#include <Vcl.StdCtrls.hpp>
-#include <Vcl.Forms.hpp>
-#include <Vcl.ExtCtrls.hpp>
-#include <Vcl.Imaging.pngimage.hpp>
+#include <vcl.h>
+#pragma hdrstop
 
-//added forms:
-#include "FrmPlayLevels.h"
-#include "FrmLevel.h"
-#include "FormMain.h"
+#include "FrmTampilanLevelAwall.h"
+
 //---------------------------------------------------------------------------
-class TFrmTampilanLevelAwal : public TForm
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TFrmTampilanLevelAwal *FrmTampilanLevelAwal;
+
+//---------------------------------------------------------------------------
+__fastcall TFrmTampilanLevelAwal::TFrmTampilanLevelAwal(TComponent* Owner)
+	: TForm(Owner)
 {
-__published:	// IDE-managed Components
-	TImage *Image1;
-	TImage *PlayButton;
-	TImage *KecoaGmbr;
-	TImage *Image2;
-	void __fastcall PlayButtonClick(TObject *Sender);
-private:	// User declarations
 
-public:		// User declarations
-	__fastcall TFrmTampilanLevelAwal(TComponent* Owner);
-};
+}
 //---------------------------------------------------------------------------
-extern PACKAGE TFrmTampilanLevelAwal *FrmTampilanLevelAwal;
+
+void __fastcall TFrmTampilanLevelAwal::PlayButtonClick(TObject *Sender)
+{
+   bool test=false;
+/*if (!FrmPlayLevel) {
+		FrmPlayLevel = new TFrmPlayLevel(this);
+	}   */
+	//FrmTampilanLevelAwal->Hide();
+	FrmPlayLevel->Show();
+	FrmPlayLevel->PrepareImages();
+	//FrmPlayLevel->MainLoop(this, test);
+	Application->OnIdle=FrmPlayLevel->MainLoop;
+
+	//FrmPlayLevel->SetFocus();
+	//FrmPlayLevel->BringToFront();
+
+	/*	if(FrmMain->Visible){
+			FrmMain->Hide();
+		}
+
+		if(FrmLevels->Visible){
+			FrmLevels->Hide();
+		}
+
+		if(FrmTampilanLevelAwal->Visible){
+			FrmTampilanLevelAwal->Hide();
+		}    */
+
+}
 //---------------------------------------------------------------------------
-#endif
