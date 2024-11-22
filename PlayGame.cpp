@@ -157,7 +157,7 @@ void TFrmPlayLevel::PrepareImages()
 	Letters[1][19] = LoadImageFromBitmap(Letters[1][19], &LetterWidth, &LetterHeight, "Letters\\Green\\TG.bmp");
 	Letters[1][20] = LoadImageFromBitmap(Letters[1][20], &LetterWidth, &LetterHeight, "Letters\\Green\\UG.bmp");
 	Letters[1][21] = LoadImageFromBitmap(Letters[1][21], &LetterWidth, &LetterHeight, "Letters\\Green\\VG.bmp");
-	Letters[1][22] = LoadImageFromBitmap(Letters[1][22], &LetterWidth, &LetterHeight, "Letters\\Green\\GG.bmp");
+	Letters[1][22] = LoadImageFromBitmap(Letters[1][22], &LetterWidth, &LetterHeight, "Letters\\Green\\WG.bmp");
 	Letters[1][23] = LoadImageFromBitmap(Letters[1][23], &LetterWidth, &LetterHeight, "Letters\\Green\\XG.bmp");
 	Letters[1][24] = LoadImageFromBitmap(Letters[1][24], &LetterWidth, &LetterHeight, "Letters\\Green\\YG.bmp");
 	Letters[1][25] = LoadImageFromBitmap(Letters[1][25], &LetterWidth, &LetterHeight, "Letters\\Green\\ZG.bmp");
@@ -237,14 +237,19 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 	//PutImage(RoachAtk[SprNo], RoachWidth[SprNo], RoachHeight[SprNo], 990, 450, Process);
 
 	//words
-	bool lettercocok[3] = {false, false, false};
+	//bool lettercocok[3] = {false, false, false};
 	//ad key = LastKeyPressed dan KeyWasPressed = true;
+
 	AnsiString TesOutput = "";
 	char OutputArray[3];
 
+	if (!Hit)
 	 if (WordIsMoving) {
-
-		for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 3; i++) {
+			FirstCorrect=false;
+			SecondCorrect=false;
+			ThirdCorrect=false;
+			Label2->Caption = FirstCorrect;
 
 			//Label1->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + TesOutput;
 
@@ -257,20 +262,73 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 			Label1->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + WordOutput;
 			//Label1->Caption = IntToStr(i) + ": " + (lettercocok[i] ? "Hijau" : "Putih");
 
-			PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight,
-					 xWord + i * LetterWidth, yWord, Process);
+
+			
+			//before this, check if the letter pressed is the same or not with the one on screen if yes then [1] if not then [0]
+
+
+			PutImage(Letters[ ColorNo[i] ][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+			//kalo benar cek nya jd true
+			/*if (LastKeyPressed == WordOutput[i] && !CekLetter[i]) {
+				CekLetter[i] = true;
+			}
+			// hbs cek ganti jd hijau klo benar trs tetap putih kalo salah
+			if (CekLetter[i]) {
+				PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+			} else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);*/
+
+			/*if (CekLetter[0] && CekLetter[1] && CekLetter[2]) {
+				WordIsMoving=false;
+			}*/
+			//PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+			/*if(i==0){
+				PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+				if(LastKeyPressed==WordOutput[i]&& !CekLetter[i]) {
+					CekLetter[i] = true;
+					PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+					FirstCorrect=true;
+				}
+			}
+			else if (i==1) {
+				if(FirstCorrect){
+					//PutImage(Letters[1][WordOutput[0] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+					if(LastKeyPressed==WordOutput[i]&& !CekLetter[i]) {
+						CekLetter[i] = true;
+						PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+						SecondCorrect=true;
+					} else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);		
+				}
+				else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + 0 * LetterWidth, yWord, Process);	
+				
+			}
+			if(i==2){
+				if(FirstCorrect && SecondCorrect){
+					//PutImage(Letters[1][WordOutput[0] - 97], LetterWidth, LetterHeight, xWord + 0 * LetterWidth, yWord, Process);
+					//PutImage(Letters[1][WordOutput[1] - 97], LetterWidth, LetterHeight, xWord + 1 * LetterWidth, yWord, Process);	
+					if(LastKeyPressed==WordOutput[i]&& !CekLetter[i]) {
+						CekLetter[i] = true;
+						PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+					} else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+				} 
+				else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);	
+	
+
+			}
+			
+			
+			//ni g butuh lg dibwh aj
+//			PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight,
+//					 xWord + i * LetterWidth, yWord, Process);
 
 			//} }// sementara
 
-			// Periksa apakah huruf cocok dan urutan sesuai
-			if (KeyWasPressed && !lettercocok[i] && OutputArray[i] == LastKeyPressed) {
-				if (i == 0 || lettercocok[i - 1]) {
-					lettercocok[i] = true;  // Tandai huruf sebagai cocok
-				}
-			}
+			// tes cocok g
+			/*if (KeyWasPressed && !lettercocok[i] && OutputArray[i] == LastKeyPressed) {
+				lettercocok[i] = true;  // Tandai huruf sebagai cocok
+			}*/
 
-			// Gambarkan hanya satu kali: hijau jika cocok, putih jika belum cocok
-			if (lettercocok[i]) {
+			//kl pas jd hijau, kl g putih
+			/*if (lettercocok[i]) {
 				PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight,
 						 xWord + i * LetterWidth, yWord, Process);
 			}
@@ -278,24 +336,34 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 			else {
 				PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight,
 						 xWord + i * LetterWidth, yWord, Process);
-			}
-         }
+			}*/
 
-		//	if (KeyWasPressed) {
-		//			KeyWasPressed = false;
-		//		}
 
-		if (xWord>ScreenWidth/2) xWord--; else WordIsMoving=false;
+		} //for
 
-	 }
+
+
+
+		//INI FIX BNR JGN HAPUS
+		if (xWord>500) xWord-=4; else WordIsMoving=false;
+
+	 } //if moving
 
 	 else {
 	   strcpy(WordOutput, WordsDB[ Random(WordCount) ]);
 	   WordIsMoving=true;
-	   xWord=ScreenWidth-100;
+	   xWord=ScreenWidth-200;
 	   yWord=300;
 	   HurufKe=0;
+	   PoseNo=1;
+	   Atk=true;
+	   /*CekLetter[0] = false;
+	   CekLetter[1] = false;
+	   CekLetter[2] = false;*/
+	   for(i=0; i<3; i++) ColorNo[i]=0;
+	   LastKeyPressed = NULL;
 	 }
+	//end of if (Hit)
 
 	CopyScreenToBitmap(Process, BM, ScreenWidth, ScreenHeight);
 	ImgScr->Picture->Bitmap = BM;
@@ -363,7 +431,7 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 //---------------------------------------------------------------------------
 void __fastcall TFrmPlayLevel::FormClose(TObject *Sender, TCloseAction &Action)
 {
-	SetScreenResolution(OldScreenWidth, OldScreenHeight);
+	//SetScreenResolution(OldScreenWidth, OldScreenHeight);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &Key)
@@ -391,11 +459,22 @@ void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &K
 				//biar key bs dipke dluar fucntion keypress
 				LastKeyPressed = Key;
 				KeyWasPressed = true;
+				
+
 
 				//utk simpan input user ke database
-				WordInput[HurufKe]=Key;
-				HurufKe++;
+				if (WordOutput[HurufKe]==Key) {
+				 ColorNo[HurufKe]=1;
+				 WordInput[HurufKe]=Key;
+				 HurufKe++;
+				}
 				WordInput[HurufKe]=0;
+				if (HurufKe==3) {
+				 Hit=true;
+                 WordIsMoving=false;
+				}
+
+				Label2->Caption = Key;
 
 			   /*	if (HurufKe==3) {
 				   Cari=WordInput;
@@ -409,12 +488,14 @@ void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &K
 
 				/*bool CekLetter[3] = {false, false, false};
 				for (int i = 0; i < 3; i++) {
+                    Label2->Caption = Key;
 					if (Key == WordOutput[i] && !CekLetter[i]) {
+
 						CekLetter[i] = true;
-						PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+						PutImage(Letters[1][3], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
 						break;
 					}
-				}*/
+				} */
 			}
 	}
 }
