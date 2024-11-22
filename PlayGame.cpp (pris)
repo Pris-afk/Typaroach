@@ -1,4 +1,3 @@
-
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
@@ -52,7 +51,7 @@ void TFrmPlayLevel::PrepareImages()
 	Process = AllocateObjectMemory(Process, ScreenWidth * ScreenHeight * CurrentBytePerPixel);
 
 	//Loading Img assets
-	Back = LoadImageFromBitmap(Back, &BackWidth, &BackHeight, "BG2.bmp");
+	Back = LoadImageFromBitmap(Back, &BackWidth, &BackHeight, "BG3.bmp");
 	RoachImg[0][0] = LoadImageFromBitmap(RoachImg[0][0], &RoachWidth[0][0], &RoachHeight[0][0], "KecoaIdle1.bmp");
 	RoachImg[0][1] = LoadImageFromBitmap(RoachImg[0][1], &RoachWidth[0][1], &RoachHeight[0][1], "KecoaIdle2.bmp");
 	RoachImg[0][2] = LoadImageFromBitmap(RoachImg[0][2], &RoachWidth[0][2], &RoachHeight[0][2], "KecoaIdle3.bmp");
@@ -563,7 +562,7 @@ void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &K
 				   Cari=WordInput;
 				   if (!TblUserWord->Locate('Word', Cari, LO)) {
 					   TblUserWord->Append();
-					   //TblUserWord->FieldByName("UserID")->AsString=...;
+					   TblUserWord->FieldByName("UserID")->AsString="001";
 					   TblUserWord->FieldByName("CollectedWord")->AsString=Cari;
 					   TblUserWord->Post();
 				   }
