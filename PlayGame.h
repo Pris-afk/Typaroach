@@ -16,6 +16,7 @@
 #include <Vcl.ComCtrls.hpp>
 #include <Data.DB.hpp>
 #include <Data.Win.ADODB.hpp>
+#include <Vcl.MPlayer.hpp>
 //---------------------------------------------------------------------------
 class TFrmPlayLevel : public TForm
 {
@@ -27,9 +28,11 @@ __published:	// IDE-managed Components
 	TADOQuery *QueryWord;
 	TLabel *Label1;
 	TADOTable *TblUserWord;
+	TLabel *Label2;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
+
 private:	// User declarations
 	tDisplay RoachImg[3][21];
 	tDisplay NewsImg[10], Letters[2][26];
@@ -42,6 +45,13 @@ private:	// User declarations
 	//int RoachAtkW[21], RoachAtkH[21], RASprNo, xRoachAtk, yRoachAtk, RATickCount;
 	int NewsWidth[10], NewsHeight[10], NSprNo, xNews, yNews, NTickCount;
 	bool Hit, Atk, Hurt;
+    bool FirstCorrect, SecondCorrect, ThirdCorrect;
+
+    //(biar key bs diluar keypress)
+	char LastKeyPressed;
+	bool KeyWasPressed;
+	//bool CekLetter[3] = {false, false, false};
+    int ColorNo[3]={0,0,0};
 
 	Graphics::TBitmap *BM;
 	TLocateOptions LO;
