@@ -51,7 +51,7 @@ void TFrmPlayLevel::PrepareImages()
 	Process = AllocateObjectMemory(Process, ScreenWidth * ScreenHeight * CurrentBytePerPixel);
 
 	//Loading Img assets
-	Back = LoadImageFromBitmap(Back, &BackWidth, &BackHeight, "BG3.bmp");
+	Back = LoadImageFromBitmap(Back, &BackWidth, &BackHeight, "BG2.bmp");
 	RoachImg[0][0] = LoadImageFromBitmap(RoachImg[0][0], &RoachWidth[0][0], &RoachHeight[0][0], "KecoaIdle1.bmp");
 	RoachImg[0][1] = LoadImageFromBitmap(RoachImg[0][1], &RoachWidth[0][1], &RoachHeight[0][1], "KecoaIdle2.bmp");
 	RoachImg[0][2] = LoadImageFromBitmap(RoachImg[0][2], &RoachWidth[0][2], &RoachHeight[0][2], "KecoaIdle3.bmp");
@@ -94,17 +94,42 @@ void TFrmPlayLevel::PrepareImages()
 	//RoachImg[2][8] = LoadImageFromBitmap(RoachImg[2][8], &RoachWidth[2][8], &RoachHeight[2][8], "KecoaDizzy3.bmp");
 	//RoachImg[2][9] = LoadImageFromBitmap(RoachImg[2][9], &RoachWidth[2][9], &RoachHeight[2][9], "KecoaDizzy2.bmp");
 
+	//Kecoa mati animasi
+	RoachImg[3][0] = LoadImageFromBitmap(RoachImg[3][0], &RoachWidth[3][0], &RoachHeight[3][0], "KecoaDead1.bmp");
+	RoachImg[3][1] = LoadImageFromBitmap(RoachImg[3][1], &RoachWidth[3][1], &RoachHeight[3][1], "KecoaDead2.bmp");
+	RoachImg[3][2] = LoadImageFromBitmap(RoachImg[3][2], &RoachWidth[3][2], &RoachHeight[3][2], "KecoaDead3.bmp");
+	RoachImg[3][3] = LoadImageFromBitmap(RoachImg[3][3], &RoachWidth[3][3], &RoachHeight[3][3], "KecoaDead4.bmp");
+	RoachImg[3][4] = LoadImageFromBitmap(RoachImg[3][4], &RoachWidth[3][4], &RoachHeight[3][4], "KecoaDead5.bmp");
+	RoachImg[3][5] = LoadImageFromBitmap(RoachImg[3][5], &RoachWidth[3][5], &RoachHeight[3][5], "KecoaDead6.bmp");
+	RoachImg[3][6] = LoadImageFromBitmap(RoachImg[3][6], &RoachWidth[3][6], &RoachHeight[3][6], "KecoaDead5.bmp");
+	RoachImg[3][7] = LoadImageFromBitmap(RoachImg[3][7], &RoachWidth[3][7], &RoachHeight[3][7], "KecoaDead6.bmp");
+	RoachImg[3][8] = LoadImageFromBitmap(RoachImg[3][8], &RoachWidth[3][8], &RoachHeight[3][8], "KecoaDead5.bmp");
+	RoachImg[3][9] = LoadImageFromBitmap(RoachImg[3][9], &RoachWidth[3][9], &RoachHeight[3][9], "KecoaDead6.bmp");
+	RoachImg[3][10] = LoadImageFromBitmap(RoachImg[3][10], &RoachWidth[3][10], &RoachHeight[3][10], "KecoaDead5.bmp");
+
 	//Newspaper hand
-	NewsImg[0] = LoadImageFromBitmap(NewsImg[0], &NewsWidth[0], &NewsHeight[0], "news1.bmp");
-	NewsImg[1] = LoadImageFromBitmap(NewsImg[1], &NewsWidth[1], &NewsHeight[1], "news2.bmp");
-	NewsImg[2] = LoadImageFromBitmap(NewsImg[2], &NewsWidth[2], &NewsHeight[2], "news3.bmp");
-	NewsImg[3] = LoadImageFromBitmap(NewsImg[3], &NewsWidth[3], &NewsHeight[3], "news4.bmp");
-	NewsImg[4] = LoadImageFromBitmap(NewsImg[4], &NewsWidth[4], &NewsHeight[4], "news5.bmp");
-	NewsImg[5] = LoadImageFromBitmap(NewsImg[5], &NewsWidth[5], &NewsHeight[5], "news5.bmp");
-	NewsImg[6] = LoadImageFromBitmap(NewsImg[6], &NewsWidth[6], &NewsHeight[6], "news4.bmp");
-	NewsImg[7] = LoadImageFromBitmap(NewsImg[7], &NewsWidth[7], &NewsHeight[7], "news3.bmp");
-	NewsImg[8] = LoadImageFromBitmap(NewsImg[8], &NewsWidth[8], &NewsHeight[8], "news2.bmp");
-	NewsImg[9] = LoadImageFromBitmap(NewsImg[9], &NewsWidth[9], &NewsHeight[9], "news1.bmp");
+	NewsImg[0][0] = LoadImageFromBitmap(NewsImg[0][0], &NewsWidth[0][0], &NewsHeight[0][0], "news1.bmp");
+	NewsImg[0][1] = LoadImageFromBitmap(NewsImg[0][1], &NewsWidth[0][1], &NewsHeight[0][1], "news2.bmp");
+	NewsImg[0][2] = LoadImageFromBitmap(NewsImg[0][2], &NewsWidth[0][2], &NewsHeight[0][2], "news3.bmp");
+	NewsImg[0][3] = LoadImageFromBitmap(NewsImg[0][3], &NewsWidth[0][3], &NewsHeight[0][3], "news4.bmp");
+	NewsImg[0][4] = LoadImageFromBitmap(NewsImg[0][4], &NewsWidth[0][4], &NewsHeight[0][4], "news5.bmp");
+	NewsImg[0][5] = LoadImageFromBitmap(NewsImg[0][5], &NewsWidth[0][5], &NewsHeight[0][5], "news5.bmp");
+	NewsImg[0][6] = LoadImageFromBitmap(NewsImg[0][6], &NewsWidth[0][6], &NewsHeight[0][6], "news4.bmp");
+	NewsImg[0][7] = LoadImageFromBitmap(NewsImg[0][7], &NewsWidth[0][7], &NewsHeight[0][7], "news3.bmp");
+	NewsImg[0][8] = LoadImageFromBitmap(NewsImg[0][8], &NewsWidth[0][8], &NewsHeight[0][8], "news2.bmp");
+	NewsImg[0][9] = LoadImageFromBitmap(NewsImg[0][9], &NewsWidth[0][9], &NewsHeight[0][9], "news1.bmp");
+
+	//Newspaper Ulti
+	NewsImg[1][0] = LoadImageFromBitmap(NewsImg[1][0], &NewsWidth[1][0], &NewsHeight[1][0], "newsUlti1.bmp");
+	NewsImg[1][1] = LoadImageFromBitmap(NewsImg[1][1], &NewsWidth[1][1], &NewsHeight[1][1], "newsUlti2.bmp");
+	NewsImg[1][2] = LoadImageFromBitmap(NewsImg[1][2], &NewsWidth[1][2], &NewsHeight[1][2], "newsUlti3.bmp");
+	NewsImg[1][3] = LoadImageFromBitmap(NewsImg[1][3], &NewsWidth[1][3], &NewsHeight[1][3], "newsUlti4.bmp");
+	NewsImg[1][4] = LoadImageFromBitmap(NewsImg[1][4], &NewsWidth[1][4], &NewsHeight[1][4], "newsUlti5.bmp");
+	NewsImg[1][5] = LoadImageFromBitmap(NewsImg[1][5], &NewsWidth[1][5], &NewsHeight[1][5], "newsUlti5.bmp");
+	NewsImg[1][6] = LoadImageFromBitmap(NewsImg[1][6], &NewsWidth[1][6], &NewsHeight[1][6], "newsUlti4.bmp");
+	NewsImg[1][7] = LoadImageFromBitmap(NewsImg[1][7], &NewsWidth[1][7], &NewsHeight[1][7], "newsUlti3.bmp");
+	NewsImg[1][8] = LoadImageFromBitmap(NewsImg[1][8], &NewsWidth[1][8], &NewsHeight[1][8], "newsUlti2.bmp");
+	NewsImg[1][9] = LoadImageFromBitmap(NewsImg[1][9], &NewsWidth[1][9], &NewsHeight[1][9], "newsUlti1.bmp");
 
 	//Letters Putih
 	Letters[0][0] = LoadImageFromBitmap(Letters[0][0], &LetterWidth, &LetterHeight, "Letters\\White\\AW.bmp");
@@ -170,16 +195,19 @@ void TFrmPlayLevel::PrepareImages()
 	Atk=false;
 
 	PoseNo=0;
+	NPoseNo=0;
 	NSprNo = 0;
 	SprNo = 0;
+
 	TickCount = 0;
 	NTickCount = 0;
+	Speed=6;
 	BM->Width=ScreenWidth;
 	BM->Height=ScreenHeight;
 
 	CopyScreen(Back, Process, ScreenWidth, ScreenHeight);
 	PutImage(RoachImg[PoseNo][SprNo], RoachWidth[PoseNo][SprNo], RoachHeight[PoseNo][SprNo], 900, 430, Process);
-	PutImage(NewsImg[NSprNo], NewsWidth[NSprNo], NewsHeight[NSprNo], -120, 0, Process);
+	PutImage(NewsImg[NPoseNo][NSprNo], NewsWidth[NPoseNo][NSprNo], NewsHeight[NPoseNo][NSprNo], -120, 0, Process);
 	CopyScreenToBitmap(Process, BM, ScreenWidth, ScreenHeight);
 	ImgScr->Picture->Bitmap = BM;
 
@@ -233,7 +261,7 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 	CopyScreen(Back, Process, ScreenWidth, ScreenHeight);
 	PutImage(RoachImg[PoseNo][SprNo], RoachWidth[PoseNo][SprNo], RoachHeight[PoseNo][SprNo], 900, 430, Process);
 	//PutImage(NewsImg[0], NewsWidth[0], NewsHeight[0], -114, 0, Process);
-	PutImage(NewsImg[NSprNo], NewsWidth[NSprNo], NewsHeight[NSprNo], -120, 0, Process);
+	PutImage(NewsImg[NPoseNo][NSprNo], NewsWidth[NPoseNo][NSprNo], NewsHeight[NPoseNo][NSprNo], -120, 0, Process);
 	//PutImage(RoachAtk[SprNo], RoachWidth[SprNo], RoachHeight[SprNo], 990, 450, Process);
 
 	//words
@@ -255,10 +283,13 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 			TesOutput += OutputArray[i];
 			TesOutput += " ";
 
-			Label1->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + WordOutput;
+			//Label1->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + WordOutput;
 			//Label1->Caption = IntToStr(i) + ": " + (lettercocok[i] ? "Hijau" : "Putih");
 
+
+
 			//before this, check if the letter pressed is the same or not with the one on screen if yes then [1] if not then [0]
+
 
 			PutImage(Letters[ ColorNo[i] ][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
 			//kalo benar cek nya jd true
@@ -266,6 +297,48 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 				CekLetter[i] = true;
 			}
 			// hbs cek ganti jd hijau klo benar trs tetap putih kalo salah
+			if (CekLetter[i]) {
+				PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+			} else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);*/
+
+			/*if (CekLetter[0] && CekLetter[1] && CekLetter[2]) {
+				WordIsMoving=false;
+			}*/
+			//PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+			/*if(i==0){
+				PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+				if(LastKeyPressed==WordOutput[i]&& !CekLetter[i]) {
+					CekLetter[i] = true;
+					PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+					FirstCorrect=true;
+				}
+			}
+			else if (i==1) {
+				if(FirstCorrect){
+					//PutImage(Letters[1][WordOutput[0] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+					if(LastKeyPressed==WordOutput[i]&& !CekLetter[i]) {
+						CekLetter[i] = true;
+						PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+						SecondCorrect=true;
+					} else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+				}
+				else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + 0 * LetterWidth, yWord, Process);
+
+			}
+			if(i==2){
+				if(FirstCorrect && SecondCorrect){
+					//PutImage(Letters[1][WordOutput[0] - 97], LetterWidth, LetterHeight, xWord + 0 * LetterWidth, yWord, Process);
+					//PutImage(Letters[1][WordOutput[1] - 97], LetterWidth, LetterHeight, xWord + 1 * LetterWidth, yWord, Process);
+					if(LastKeyPressed==WordOutput[i]&& !CekLetter[i]) {
+						CekLetter[i] = true;
+						PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+					} else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+				}
+				else PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+
+
+			}
+
 
 			//ni g butuh lg dibwh aj
 //			PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight,
@@ -292,24 +365,38 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 
 		} //for
 
+
+
+
 		//INI FIX BNR JGN HAPUS
-		if (xWord>500) xWord-=4; else WordIsMoving=false;
+		if (xWord>500) {
+			xWord-=2;
+		}
+
+		else {
+			WordIsMoving=false;
+			UserBar->Position -= 4;
+		}
 
 	 } //if moving
 
 	 else {
 	   strcpy(WordOutput, WordsDB[ Random(WordCount) ]);
-	   WordIsMoving=true;
-	   xWord=ScreenWidth-200;
-	   yWord=300;
-	   HurufKe=0;
-	   PoseNo=1;
-	   Atk=true;
-	   /*CekLetter[0] = false;
-	   CekLetter[1] = false;
-	   CekLetter[2] = false;*/
-	   for(i=0; i<3; i++) ColorNo[i]=0;
-	   LastKeyPressed = NULL;
+	   if(MusuhBar->Position >0 && EnergiBar->Position<100 && !Ulti){
+		   WordIsMoving=true;
+		   xWord=ScreenWidth-400;
+		   yWord=300;
+		   HurufKe=0;
+		   if(PoseNo !=3) PoseNo=1;
+		   //PoseNo=1;
+		   Atk=true;
+		   /*CekLetter[0] = false;
+		   CekLetter[1] = false;
+		   CekLetter[2] = false;*/
+		   for(i=0; i<3; i++) ColorNo[i]=0;
+		   LastKeyPressed = NULL;
+	   }
+
 	 }
 	//end of if (Hit)
 
@@ -324,7 +411,7 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 	}
 
 	//if kecoa get hit
-	if(NSprNo==5){
+	if(NSprNo==5 && MusuhBar->Position>0){
 		Hurt=true;
 		PoseNo=2;
 		SprNo=0;
@@ -332,9 +419,8 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 
 	//trigger animation for kecoa getting hit
 	if(Hurt){
-		//PoseNo=2;
-		//SprNo=0;
-		if(TickCount %10==0){
+
+		if(TickCount %11==0){
 			SprNo++;
 			if(SprNo>=8){
 				PoseNo=0;
@@ -346,7 +432,7 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 	}
 
 	//if hand attacks
-	if (TickCount %5 == 0 && Hit) {
+	if (TickCount %Speed == 0 && Hit) {
 		NSprNo++;
 		//if(TickCount %10 == 0 && Hurt){//slower kecoa getting hit animation
 			//PoseNo=2;
@@ -372,6 +458,24 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 		}
 	}
 
+	if (MusuhBar->Position==0) {
+		PoseNo=3;
+		Dead=true;
+	}
+
+	if(PoseNo==3){
+
+		if(TickCount %12 ==0){
+
+			Label1->Caption = IntToStr(SprNo)+ "  " + IntToStr(PoseNo);
+
+			if(SprNo>=10){
+				SprNo=10;
+				WordIsMoving=false;
+			} else SprNo++;
+		}
+	}
+
 	Done = false;
 	TickCount++;
 }
@@ -379,27 +483,56 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 //---------------------------------------------------------------------------
 void __fastcall TFrmPlayLevel::FormClose(TObject *Sender, TCloseAction &Action)
 {
+	//MusuhBar->Position = 5;
+	KoneksiDB->Close();
 	//SetScreenResolution(OldScreenWidth, OldScreenHeight);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &Key)
 {
 	AnsiString Cari;
+
+
 	switch (Key) {
-		case 27: Close(); break;
+		case 27:
+			Close();
+
+		break;
+
 		case '1':
 			Atk=true;
 			PoseNo=1;
 			break;
 			//Application->OnIdle = KecoaIdleLoop; break;
-		case 13:
-			Hit=true; break;
+		//case 13:
+			//Hit=true; break;
 			//Application->OnIdle = KecoaIdleLoop;
 			//Application->OnIdle = NewsLoop;
 			//AnimationFinished = false; break;
 			//if (NSprNo == 8) {
 			//	Application->OnIdle = KecoaIdleLoop; break;
 			//}
+
+		case 32:
+			if(EnergiBar->Position==100 || EnergiBar->Position>0 && !WordIsMoving){
+			   Ulti=true;
+			   //WordIsMoving=false;
+               Hit=true;
+			   EnergiBar->Position -=5;
+			   NPoseNo=1;
+			   Speed= 3;
+			   MusuhBar->Position -= 2;
+			   Hurt=true;
+			   PoseNo=2;
+
+			}
+			else{
+				Ulti=false;
+				NPoseNo=0;
+				Speed=5;
+			}
+			break;
+
 		default:
 			if (Key>='A' && Key<='Z') Key+=32;
 			if (Key>='a' && Key<='z') {
@@ -408,7 +541,6 @@ void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &K
 				LastKeyPressed = Key;
 				KeyWasPressed = true;
 
-				//utk simpan input user ke database
 				if (WordOutput[HurufKe]==Key) {
 				 ColorNo[HurufKe]=1;
 				 WordInput[HurufKe]=Key;
@@ -417,11 +549,15 @@ void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &K
 				WordInput[HurufKe]=0;
 				if (HurufKe==3) {
 				 Hit=true;
-                 WordIsMoving=false;
+				 WordIsMoving=false;
+				 MusuhBar->Position -= 3;
+				 EnergiBar->Position +=10;
+
 				}
 
 				//Label2->Caption = Key;
 
+				//utk simpan input user ke database
 				if (HurufKe==3) {
 				   Cari=WordInput;
 				   if (!TblUserWord->Locate('Word', Cari, LO)) {
@@ -434,7 +570,7 @@ void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &K
 
 				/*bool CekLetter[3] = {false, false, false};
 				for (int i = 0; i < 3; i++) {
-                    Label2->Caption = Key;
+					Label2->Caption = Key;
 					if (Key == WordOutput[i] && !CekLetter[i]) {
 
 						CekLetter[i] = true;
