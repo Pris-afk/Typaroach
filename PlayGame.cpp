@@ -31,7 +31,7 @@ void TFrmPlayLevel::PrepareImages()
 	//BorderStyle = bsNone;
 	WindowState = wsNormal;
 
-	strcpy(WordOutput, "aaa");
+	//strcpy(WordOutput, "aaa");
 
 	//Prepare Screen
 	BackWidth = 1366;
@@ -106,11 +106,65 @@ void TFrmPlayLevel::PrepareImages()
 	NewsImg[8] = LoadImageFromBitmap(NewsImg[8], &NewsWidth[8], &NewsHeight[8], "news2.bmp");
 	NewsImg[9] = LoadImageFromBitmap(NewsImg[9], &NewsWidth[9], &NewsHeight[9], "news1.bmp");
 
+	//Letters Putih
 	Letters[0][0] = LoadImageFromBitmap(Letters[0][0], &LetterWidth, &LetterHeight, "Letters\\White\\AW.bmp");
+	Letters[0][1] = LoadImageFromBitmap(Letters[0][1], &LetterWidth, &LetterHeight, "Letters\\White\\BW.bmp");
+	Letters[0][2] = LoadImageFromBitmap(Letters[0][2], &LetterWidth, &LetterHeight, "Letters\\White\\CW.bmp");
+	Letters[0][3] = LoadImageFromBitmap(Letters[0][3], &LetterWidth, &LetterHeight, "Letters\\White\\DW.bmp");
+	Letters[0][4] = LoadImageFromBitmap(Letters[0][4], &LetterWidth, &LetterHeight, "Letters\\White\\EW.bmp");
+	Letters[0][5] = LoadImageFromBitmap(Letters[0][5], &LetterWidth, &LetterHeight, "Letters\\White\\FW.bmp");
+	Letters[0][6] = LoadImageFromBitmap(Letters[0][6], &LetterWidth, &LetterHeight, "Letters\\White\\GW.bmp");
+	Letters[0][7] = LoadImageFromBitmap(Letters[0][7], &LetterWidth, &LetterHeight, "Letters\\White\\HW.bmp");
+	Letters[0][8] = LoadImageFromBitmap(Letters[0][8], &LetterWidth, &LetterHeight, "Letters\\White\\IW.bmp");
+	Letters[0][9] = LoadImageFromBitmap(Letters[0][9], &LetterWidth, &LetterHeight, "Letters\\White\\JW.bmp");
+	Letters[0][10] = LoadImageFromBitmap(Letters[0][10], &LetterWidth, &LetterHeight, "Letters\\White\\KW.bmp");
+	Letters[0][11] = LoadImageFromBitmap(Letters[0][11], &LetterWidth, &LetterHeight, "Letters\\White\\LW.bmp");
+	Letters[0][12] = LoadImageFromBitmap(Letters[0][12], &LetterWidth, &LetterHeight, "Letters\\White\\MW.bmp");
+	Letters[0][13] = LoadImageFromBitmap(Letters[0][13], &LetterWidth, &LetterHeight, "Letters\\White\\NW.bmp");
+	Letters[0][14] = LoadImageFromBitmap(Letters[0][14], &LetterWidth, &LetterHeight, "Letters\\White\\OW.bmp");
+	Letters[0][15] = LoadImageFromBitmap(Letters[0][15], &LetterWidth, &LetterHeight, "Letters\\White\\PW.bmp");
+	Letters[0][16] = LoadImageFromBitmap(Letters[0][16], &LetterWidth, &LetterHeight, "Letters\\White\\QW.bmp");
+	Letters[0][17] = LoadImageFromBitmap(Letters[0][17], &LetterWidth, &LetterHeight, "Letters\\White\\RW.bmp");
+	Letters[0][18] = LoadImageFromBitmap(Letters[0][18], &LetterWidth, &LetterHeight, "Letters\\White\\SW.bmp");
+	Letters[0][19] = LoadImageFromBitmap(Letters[0][19], &LetterWidth, &LetterHeight, "Letters\\White\\TW.bmp");
+	Letters[0][20] = LoadImageFromBitmap(Letters[0][20], &LetterWidth, &LetterHeight, "Letters\\White\\UW.bmp");
+	Letters[0][21] = LoadImageFromBitmap(Letters[0][21], &LetterWidth, &LetterHeight, "Letters\\White\\VW.bmp");
+	Letters[0][22] = LoadImageFromBitmap(Letters[0][22], &LetterWidth, &LetterHeight, "Letters\\White\\WW.bmp");
+	Letters[0][23] = LoadImageFromBitmap(Letters[0][23], &LetterWidth, &LetterHeight, "Letters\\White\\XW.bmp");
+	Letters[0][24] = LoadImageFromBitmap(Letters[0][24], &LetterWidth, &LetterHeight, "Letters\\White\\YW.bmp");
+	Letters[0][25] = LoadImageFromBitmap(Letters[0][25], &LetterWidth, &LetterHeight, "Letters\\White\\ZW.bmp");
+
+    //Letters Hijau
+	Letters[1][0] = LoadImageFromBitmap(Letters[1][0], &LetterWidth, &LetterHeight, "Letters\\Green\\AG.bmp");
+	Letters[1][1] = LoadImageFromBitmap(Letters[1][1], &LetterWidth, &LetterHeight, "Letters\\Green\\BG.bmp");
+	Letters[1][2] = LoadImageFromBitmap(Letters[1][2], &LetterWidth, &LetterHeight, "Letters\\Green\\CG.bmp");
+	Letters[1][3] = LoadImageFromBitmap(Letters[1][3], &LetterWidth, &LetterHeight, "Letters\\Green\\DG.bmp");
+	Letters[1][4] = LoadImageFromBitmap(Letters[1][4], &LetterWidth, &LetterHeight, "Letters\\Green\\EG.bmp");
+	Letters[1][5] = LoadImageFromBitmap(Letters[1][5], &LetterWidth, &LetterHeight, "Letters\\Green\\FG.bmp");
+	Letters[1][6] = LoadImageFromBitmap(Letters[1][6], &LetterWidth, &LetterHeight, "Letters\\Green\\GG.bmp");
+	Letters[1][7] = LoadImageFromBitmap(Letters[1][7], &LetterWidth, &LetterHeight, "Letters\\Green\\HG.bmp");
+	Letters[1][8] = LoadImageFromBitmap(Letters[1][8], &LetterWidth, &LetterHeight, "Letters\\Green\\IG.bmp");
+	Letters[1][9] = LoadImageFromBitmap(Letters[1][9], &LetterWidth, &LetterHeight, "Letters\\Green\\JG.bmp");
+	Letters[1][10] = LoadImageFromBitmap(Letters[1][10], &LetterWidth, &LetterHeight, "Letters\\Green\\KG.bmp");
+	Letters[1][11] = LoadImageFromBitmap(Letters[1][11], &LetterWidth, &LetterHeight, "Letters\\Green\\LG.bmp");
+	Letters[1][12] = LoadImageFromBitmap(Letters[1][12], &LetterWidth, &LetterHeight, "Letters\\Green\\MG.bmp");
+	Letters[1][13] = LoadImageFromBitmap(Letters[1][13], &LetterWidth, &LetterHeight, "Letters\\Green\\NG.bmp");
+	Letters[1][14] = LoadImageFromBitmap(Letters[1][14], &LetterWidth, &LetterHeight, "Letters\\Green\\OG.bmp");
+	Letters[1][15] = LoadImageFromBitmap(Letters[1][15], &LetterWidth, &LetterHeight, "Letters\\Green\\PG.bmp");
+	Letters[1][16] = LoadImageFromBitmap(Letters[1][16], &LetterWidth, &LetterHeight, "Letters\\Green\\QG.bmp");
+	Letters[1][17] = LoadImageFromBitmap(Letters[1][17], &LetterWidth, &LetterHeight, "Letters\\Green\\RG.bmp");
+	Letters[1][18] = LoadImageFromBitmap(Letters[1][18], &LetterWidth, &LetterHeight, "Letters\\Green\\SG.bmp");
+	Letters[1][19] = LoadImageFromBitmap(Letters[1][19], &LetterWidth, &LetterHeight, "Letters\\Green\\TG.bmp");
+	Letters[1][20] = LoadImageFromBitmap(Letters[1][20], &LetterWidth, &LetterHeight, "Letters\\Green\\UG.bmp");
+	Letters[1][21] = LoadImageFromBitmap(Letters[1][21], &LetterWidth, &LetterHeight, "Letters\\Green\\VG.bmp");
+	Letters[1][22] = LoadImageFromBitmap(Letters[1][22], &LetterWidth, &LetterHeight, "Letters\\Green\\GG.bmp");
+	Letters[1][23] = LoadImageFromBitmap(Letters[1][23], &LetterWidth, &LetterHeight, "Letters\\Green\\XG.bmp");
+	Letters[1][24] = LoadImageFromBitmap(Letters[1][24], &LetterWidth, &LetterHeight, "Letters\\Green\\YG.bmp");
+	Letters[1][25] = LoadImageFromBitmap(Letters[1][25], &LetterWidth, &LetterHeight, "Letters\\Green\\ZG.bmp");
 
 	//anggap semuanya huruf A dulu untuk percobaan
-	for(i=1; i<26; i++) Letters[0][i]=Letters[0][0];
-	for(i=0; i<26; i++) Letters[1][i]=Letters[0][0];
+	//for(i=1; i<26; i++) Letters[0][i]=Letters[0][0];
+	//for(i=0; i<26; i++) Letters[1][i]=Letters[0][0];
 
 	Hit=false;
 	Atk=false;
@@ -160,7 +214,7 @@ void __fastcall TFrmPlayLevel::FormCreate(TObject *Sender)
 
 	WordCount=QueryWord->RecordCount;
 	QueryWord->First();
-	ShowMessage(IntToStr(WordCount));
+	//ShowMessage(IntToStr(WordCount));
 	WordsDB=new char * [WordCount];
 	for(i=0; i<WordCount; i++) {
 	 WordsDB[i]=new char [15];
@@ -182,19 +236,66 @@ void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
 	PutImage(NewsImg[NSprNo], NewsWidth[NSprNo], NewsHeight[NSprNo], -120, 0, Process);
 	//PutImage(RoachAtk[SprNo], RoachWidth[SprNo], RoachHeight[SprNo], 990, 450, Process);
 
-   Label1->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + WordOutput;
-   if (WordIsMoving) {
-	   for(i=0; i<3; i++)
-		  PutImage(Letters[0][ WordOutput[i]-97 ], LetterWidth, LetterHeight, xWord+i*LetterWidth, yWord, Process);
+	//words
+	bool lettercocok[3] = {false, false, false};
+	//ad key = LastKeyPressed dan KeyWasPressed = true;
+	AnsiString TesOutput = "";
+	char OutputArray[3];
 
-	   if (xWord>ScreenWidth/2) xWord--; else WordIsMoving=false;
-   } else {
+	 if (WordIsMoving) {
+
+		for (int i = 0; i < 3; i++) {
+
+			//Label1->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + TesOutput;
+
+			//ok jd output dh psti msk ke array
+			OutputArray[i] = WordOutput[i];
+
+			TesOutput += OutputArray[i];
+			TesOutput += " ";
+
+			Label1->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + WordOutput;
+			//Label1->Caption = IntToStr(i) + ": " + (lettercocok[i] ? "Hijau" : "Putih");
+
+			PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight,
+					 xWord + i * LetterWidth, yWord, Process);
+
+			//} }// sementara
+
+			// Periksa apakah huruf cocok dan urutan sesuai
+			if (KeyWasPressed && !lettercocok[i] && OutputArray[i] == LastKeyPressed) {
+				if (i == 0 || lettercocok[i - 1]) {
+					lettercocok[i] = true;  // Tandai huruf sebagai cocok
+				}
+			}
+
+			// Gambarkan hanya satu kali: hijau jika cocok, putih jika belum cocok
+			if (lettercocok[i]) {
+				PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight,
+						 xWord + i * LetterWidth, yWord, Process);
+			}
+
+			else {
+				PutImage(Letters[0][WordOutput[i] - 97], LetterWidth, LetterHeight,
+						 xWord + i * LetterWidth, yWord, Process);
+			}
+         }
+
+		//	if (KeyWasPressed) {
+		//			KeyWasPressed = false;
+		//		}
+
+		if (xWord>ScreenWidth/2) xWord--; else WordIsMoving=false;
+
+	 }
+
+	 else {
 	   strcpy(WordOutput, WordsDB[ Random(WordCount) ]);
 	   WordIsMoving=true;
 	   xWord=ScreenWidth-100;
 	   yWord=300;
 	   HurufKe=0;
-   }
+	 }
 
 	CopyScreenToBitmap(Process, BM, ScreenWidth, ScreenHeight);
 	ImgScr->Picture->Bitmap = BM;
@@ -286,11 +387,17 @@ void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &K
 		default: 
 			if (Key>='A' && Key<='Z') Key+=32;
 			if (Key>='a' && Key<='z') {
+
+				//biar key bs dipke dluar fucntion keypress
+				LastKeyPressed = Key;
+				KeyWasPressed = true;
+
+				//utk simpan input user ke database
 				WordInput[HurufKe]=Key;
 				HurufKe++;
 				WordInput[HurufKe]=0;
 
-				if (HurufKe==3) {
+			   /*	if (HurufKe==3) {
 				   Cari=WordInput;
 				   if (!TblUserWord->Locate('Word', Cari, LO)) {
 					   TblUserWord->Append();
@@ -298,9 +405,19 @@ void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &K
 					   TblUserWord->FieldByName("Word")->AsString=Cari;
 					   TblUserWord->Post();
 				   }
-				}
+				}   */
+
+				/*bool CekLetter[3] = {false, false, false};
+				for (int i = 0; i < 3; i++) {
+					if (Key == WordOutput[i] && !CekLetter[i]) {
+						CekLetter[i] = true;
+						PutImage(Letters[1][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+						break;
+					}
+				}*/
 			}
-			
 	}
 }
+
+
 //---------------------------------------------------------------------------
