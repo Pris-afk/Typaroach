@@ -1,0 +1,17 @@
+int Clicklvl1 = 0;
+void __fastcall TFrmLevels::Level1LockedClick(TObject *Sender)
+{
+	Clicklvl1++;
+
+	if (Clicklvl1 >= 2) {
+		/*if (!FrmTampilanLevelAwal) {
+		FrmTampilanLevelAwal = new TFrmTampilanLevelAwal (this);
+		} */
+		//FrmMain->Hide();
+		FrmTampilanLevelAwal->Show();
+
+	} else {
+		Level1Locked->Picture->LoadFromFile("Level Box w\\bmp\\1.bmp");
+	}
+
+}
