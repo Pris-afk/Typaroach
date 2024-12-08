@@ -5,48 +5,114 @@
 #include <PngImage.hpp>
 
 #include "FrmLevel.h"
-#include "FormMain.h"
-#include "FrmTampilanLevelAwall.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TFrmLevels *FrmLevels;
-TFrmMain *FrmMain;
-TFrmTampilanLevelAwal *FrmTampilanLevelAwal;
+
 //---------------------------------------------------------------------------
 __fastcall TFrmLevels::TFrmLevels(TComponent* Owner)
 	: TForm(Owner)
 {
 }
 //---------------------------------------------------------------------------
+void __fastcall TFrmLevels::FormCreate(TObject *Sender)
+{
+    KoneksiDB->Close();
+	KoneksiDB->ConnectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=DatabaseTesttttttttPls.mdb;Persist Security Info=False";
+	KoneksiDB->Open();
+
+
+	//take level status, stars, words
+	//if locked (should be all locked except for lvl 1) show message when clicked
+	//
+
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TFrmLevels::HomeButtonClick(TObject *Sender)
 {
-	if (!FrmMain) {
+	/*if (!FrmMain) {
 		FrmMain = new TFrmMain(this);
 	}
-	FrmMain->Show();
+	FrmMain->Show(); */
 	//FrmMain->SetFocus();
 
 	if(FrmLevels && FrmLevels->Visible){ //utk cek formny open / g (visible itu true/false)
 		FrmLevels->Close();
 	}
+
+	if(FrmTampilanLevelAwal->Visible){
+		FrmTampilanLevelAwal->Close();
+	}
+
+	if(FrmPlayLevel->Visible){
+		FrmPlayLevel->Close();
+	}
+
+	if(TampilanWinLose->Visible){
+		TampilanWinLose->Close();
+	}
 }
 //---------------------------------------------------------------------------
 
-int localClick = 0;
-void __fastcall TFrmLevels::Level1LockedClick(TObject *Sender)
+int Clicklvl1 = 0;
+void __fastcall TFrmLevels::Level1BoxClick(TObject *Sender)
 {
+	//Clicklvl1++;
+	FrmTampilanLevelAwal->lvl = 1;
+	FrmTampilanLevelAwal->Show();
 
-	localClick++;
-
-	if (localClick >= 2) {
-		if (!FrmTampilanLevelAwal) {
+	/*if (Clicklvl1 >= 2) {
+		/*if (!FrmTampilanLevelAwal) {
 		FrmTampilanLevelAwal = new TFrmTampilanLevelAwal (this);
-		}
-		FrmTampilanLevelAwal->Show();
+		}  */
+		//FrmMain->Hide();
+	/*	FrmTampilanLevelAwal->Show();
+
 	} else {
 		Level1Locked->Picture->LoadFromFile("Level Box w\\bmp\\1.bmp");
+	}*/
+
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TFrmLevels::Level2LockedClick(TObject *Sender)
+{
+
+
+	/*if(!open){
+		ShowMessage("This level is still locked! \n Clear the previous level to unlock this level.");
+	} */
+}
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmLevels::FormClose(TObject *Sender, TCloseAction &Action)
+{
+	KoneksiDB->Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmLevels::FormShow(TObject *Sender)
+{
+	TblLevels->Connection=KoneksiDB;
+	TblLevels->TableName="Levels";
+	TblLevels->Open();
+
+	QueryWord->SQL->Clear();
+	QueryWord->SQL->Add("Select * From Levels Where LevelID = 'L02'");
+	QueryWord->Open();
+	unlocked = QueryWord->FieldByName("Status")->AsBoolean;
+
+	if(unlocked){
+		Level2Locked->Picture->LoadFromFile("Level Box w\\2.png");
 	}
 
+    QueryWord->Close();
 }
 //---------------------------------------------------------------------------
