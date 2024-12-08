@@ -1,0 +1,812 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "FrmPlayLevels.h"
+#include "CPP2DWinAnimation.h"
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TFrmPlayLevel *FrmPlayLevel;
+
+void AnsiToCStr(AnsiString AS, char CStr[])
+{
+ int i, l=AS.Length();
+ for(i=0; i<l; i++)
+  CStr[i]=AS[i+1];
+ CStr[i]=0;
+}
+
+void TFrmPlayLevel::PrepareImages()
+{
+	int i;
+	//get OldScreenResolution
+	//OldScreenWidth = GetSystemMetrics(SM_CXSCREEN);
+	//OldScreenHeight = GetSystemMetrics(SM_CYSCREEN);
+	//Label1->Caption = OldScreenHeight;
+	//SetScreenResolution(1366, 768);
+	//Prepare form
+	//BorderStyle = bsNone;
+	WindowState = wsNormal;
+
+	//strcpy(WordOutput, "aaa");
+
+	//Prepare Screen
+	BackWidth = 1366;
+	BackHeight = 768;
+	ScreenWidth = 1366;
+	ScreenHeight = 768;
+	CurrentBytePerPixel = 3;
+	CurrentBitPerPixel = 24;
+	CurrentPixelFormat = pf24bit;
+
+	ImgScr->Left = 0;
+	ImgScr->Width = ScreenWidth;
+	ImgScr->Height = ScreenHeight;
+
+	BM = new Graphics::TBitmap;
+	//Back = AllocateObjectMemory(Back, BackWidth * BackHeight * CurrentBytePerPixel);
+	Process = AllocateObjectMemory(Process, ScreenWidth * ScreenHeight * CurrentBytePerPixel);
+
+	//Loading Img assets
+	Back = LoadImageFromBitmap(Back, &BackWidth, &BackHeight, "BG3.bmp");
+	RoachImg[0][0] = LoadImageFromBitmap(RoachImg[0][0], &RoachWidth[0][0], &RoachHeight[0][0], "KecoaIdle1.bmp");
+	RoachImg[0][1] = LoadImageFromBitmap(RoachImg[0][1], &RoachWidth[0][1], &RoachHeight[0][1], "KecoaIdle2.bmp");
+	RoachImg[0][2] = LoadImageFromBitmap(RoachImg[0][2], &RoachWidth[0][2], &RoachHeight[0][2], "KecoaIdle3.bmp");
+	RoachImg[0][3] = LoadImageFromBitmap(RoachImg[0][3], &RoachWidth[0][3], &RoachHeight[0][3], "KecoaIdle4.bmp");
+	RoachImg[0][4] = LoadImageFromBitmap(RoachImg[0][4], &RoachWidth[0][4], &RoachHeight[0][4], "KecoaIdle3.bmp");
+	RoachImg[0][5] = LoadImageFromBitmap(RoachImg[0][5], &RoachWidth[0][5], &RoachHeight[0][5], "KecoaIdle2.bmp");
+
+	//Kecoa Attack
+	RoachImg[1][0] = LoadImageFromBitmap(RoachImg[1][0], &RoachWidth[1][0], &RoachHeight[1][0], "KecoaAtk1.bmp");
+	RoachImg[1][1] = LoadImageFromBitmap(RoachImg[1][1], &RoachWidth[1][1], &RoachHeight[1][1], "KecoaAtk2.bmp");
+	RoachImg[1][2] = LoadImageFromBitmap(RoachImg[1][2], &RoachWidth[1][2], &RoachHeight[1][2], "KecoaAtk3.bmp");
+	RoachImg[1][3] = LoadImageFromBitmap(RoachImg[1][3], &RoachWidth[1][3], &RoachHeight[1][3], "KecoaAtk4.bmp");
+	RoachImg[1][4] = LoadImageFromBitmap(RoachImg[1][4], &RoachWidth[1][4], &RoachHeight[1][4], "KecoaAtk5.bmp");
+	RoachImg[1][5] = LoadImageFromBitmap(RoachImg[1][5], &RoachWidth[1][5], &RoachHeight[1][5], "KecoaAtk6.bmp");
+	RoachImg[1][6] = LoadImageFromBitmap(RoachImg[1][6], &RoachWidth[1][6], &RoachHeight[1][6], "KecoaAtk7.bmp");
+	RoachImg[1][7] = LoadImageFromBitmap(RoachImg[1][7], &RoachWidth[1][7], &RoachHeight[1][7], "KecoaAtk8.bmp");
+	RoachImg[1][8] = LoadImageFromBitmap(RoachImg[1][8], &RoachWidth[1][8], &RoachHeight[1][8], "KecoaAtk9.bmp");
+	RoachImg[1][9] = LoadImageFromBitmap(RoachImg[1][9], &RoachWidth[1][9], &RoachHeight[1][9], "KecoaAtk10.bmp");
+	RoachImg[1][10] = LoadImageFromBitmap(RoachImg[1][10], &RoachWidth[1][10], &RoachHeight[1][10], "KecoaAtk11.bmp");
+	RoachImg[1][11] = LoadImageFromBitmap(RoachImg[1][11], &RoachWidth[1][11], &RoachHeight[1][11], "KecoaAtk12.bmp");
+	RoachImg[1][12] = LoadImageFromBitmap(RoachImg[1][12], &RoachWidth[1][12], &RoachHeight[1][12], "KecoaAtk13.bmp");
+	RoachImg[1][13] = LoadImageFromBitmap(RoachImg[1][13], &RoachWidth[1][13], &RoachHeight[1][13], "KecoaAtk14.bmp");
+	RoachImg[1][14] = LoadImageFromBitmap(RoachImg[1][14], &RoachWidth[1][14], &RoachHeight[1][14], "KecoaAtk15.bmp");
+	RoachImg[1][15] = LoadImageFromBitmap(RoachImg[1][15], &RoachWidth[1][15], &RoachHeight[1][15], "KecoaAtk16.bmp");
+	RoachImg[1][16] = LoadImageFromBitmap(RoachImg[1][16], &RoachWidth[1][16], &RoachHeight[1][16], "KecoaAtk17.bmp");
+	RoachImg[1][17] = LoadImageFromBitmap(RoachImg[1][17], &RoachWidth[1][17], &RoachHeight[1][17], "KecoaAtk18.bmp");
+	RoachImg[1][18] = LoadImageFromBitmap(RoachImg[1][18], &RoachWidth[1][18], &RoachHeight[1][18], "KecoaAtk19.bmp");
+	RoachImg[1][19] = LoadImageFromBitmap(RoachImg[1][19], &RoachWidth[1][19], &RoachHeight[1][19], "KecoaAtk20.bmp");
+	RoachImg[1][20] = LoadImageFromBitmap(RoachImg[1][20], &RoachWidth[1][20], &RoachHeight[1][20], "KecoaAtk21.bmp");
+
+	//Kecoa Dizzy
+	RoachImg[2][0] = LoadImageFromBitmap(RoachImg[2][0], &RoachWidth[2][0], &RoachHeight[2][0], "KecoaDizzy1.bmp");
+	RoachImg[2][1] = LoadImageFromBitmap(RoachImg[2][1], &RoachWidth[2][1], &RoachHeight[2][1], "KecoaDizzy2.bmp");
+	RoachImg[2][2] = LoadImageFromBitmap(RoachImg[2][2], &RoachWidth[2][2], &RoachHeight[2][2], "KecoaDizzy3.bmp");
+	RoachImg[2][3] = LoadImageFromBitmap(RoachImg[2][3], &RoachWidth[2][3], &RoachHeight[2][3], "KecoaDizzy4.bmp");
+	RoachImg[2][4] = LoadImageFromBitmap(RoachImg[2][4], &RoachWidth[2][4], &RoachHeight[2][4], "KecoaDizzy5.bmp");
+	RoachImg[2][5] = LoadImageFromBitmap(RoachImg[2][5], &RoachWidth[2][5], &RoachHeight[2][5], "KecoaDizzy6.bmp");
+	RoachImg[2][6] = LoadImageFromBitmap(RoachImg[2][6], &RoachWidth[2][6], &RoachHeight[2][6], "KecoaDizzy5.bmp");
+	RoachImg[2][7] = LoadImageFromBitmap(RoachImg[2][7], &RoachWidth[2][7], &RoachHeight[2][7], "KecoaDizzy4.bmp");
+	//RoachImg[2][8] = LoadImageFromBitmap(RoachImg[2][8], &RoachWidth[2][8], &RoachHeight[2][8], "KecoaDizzy3.bmp");
+	//RoachImg[2][9] = LoadImageFromBitmap(RoachImg[2][9], &RoachWidth[2][9], &RoachHeight[2][9], "KecoaDizzy2.bmp");
+
+	//Kecoa mati animasi
+	RoachImg[3][0] = LoadImageFromBitmap(RoachImg[3][0], &RoachWidth[3][0], &RoachHeight[3][0], "KecoaDead1.bmp");
+	RoachImg[3][1] = LoadImageFromBitmap(RoachImg[3][1], &RoachWidth[3][1], &RoachHeight[3][1], "KecoaDead2.bmp");
+	RoachImg[3][2] = LoadImageFromBitmap(RoachImg[3][2], &RoachWidth[3][2], &RoachHeight[3][2], "KecoaDead3.bmp");
+	RoachImg[3][3] = LoadImageFromBitmap(RoachImg[3][3], &RoachWidth[3][3], &RoachHeight[3][3], "KecoaDead4.bmp");
+	RoachImg[3][4] = LoadImageFromBitmap(RoachImg[3][4], &RoachWidth[3][4], &RoachHeight[3][4], "KecoaDead5.bmp");
+	RoachImg[3][5] = LoadImageFromBitmap(RoachImg[3][5], &RoachWidth[3][5], &RoachHeight[3][5], "KecoaDead6.bmp");
+	RoachImg[3][6] = LoadImageFromBitmap(RoachImg[3][6], &RoachWidth[3][6], &RoachHeight[3][6], "KecoaDead5.bmp");
+	RoachImg[3][7] = LoadImageFromBitmap(RoachImg[3][7], &RoachWidth[3][7], &RoachHeight[3][7], "KecoaDead6.bmp");
+	RoachImg[3][8] = LoadImageFromBitmap(RoachImg[3][8], &RoachWidth[3][8], &RoachHeight[3][8], "KecoaDead5.bmp");
+	RoachImg[3][9] = LoadImageFromBitmap(RoachImg[3][9], &RoachWidth[3][9], &RoachHeight[3][9], "KecoaDead6.bmp");
+	RoachImg[3][10] = LoadImageFromBitmap(RoachImg[3][10], &RoachWidth[3][10], &RoachHeight[3][10], "KecoaDead5.bmp");
+	RoachImg[3][11] = LoadImageFromBitmap(RoachImg[3][11], &RoachWidth[3][11], &RoachHeight[3][11], "KecoaDead6.bmp");
+	RoachImg[3][12] = LoadImageFromBitmap(RoachImg[3][12], &RoachWidth[3][12], &RoachHeight[3][12], "KecoaDead5.bmp");
+	RoachImg[3][13] = LoadImageFromBitmap(RoachImg[3][13], &RoachWidth[3][13], &RoachHeight[3][13], "KecoaDead5.bmp");
+	RoachImg[3][14] = LoadImageFromBitmap(RoachImg[3][14], &RoachWidth[3][14], &RoachHeight[3][14], "KecoaDead5.bmp");
+	RoachImg[3][15] = LoadImageFromBitmap(RoachImg[3][15], &RoachWidth[3][15], &RoachHeight[3][15], "KecoaDead5.bmp");
+	RoachImg[3][16] = LoadImageFromBitmap(RoachImg[3][16], &RoachWidth[3][16], &RoachHeight[3][16], "KecoaDead5.bmp");
+
+
+	//Newspaper hand
+	NewsImg[0][0] = LoadImageFromBitmap(NewsImg[0][0], &NewsWidth[0][0], &NewsHeight[0][0], "news1.bmp");
+	NewsImg[0][1] = LoadImageFromBitmap(NewsImg[0][1], &NewsWidth[0][1], &NewsHeight[0][1], "news2.bmp");
+	NewsImg[0][2] = LoadImageFromBitmap(NewsImg[0][2], &NewsWidth[0][2], &NewsHeight[0][2], "news3.bmp");
+	NewsImg[0][3] = LoadImageFromBitmap(NewsImg[0][3], &NewsWidth[0][3], &NewsHeight[0][3], "news4.bmp");
+	NewsImg[0][4] = LoadImageFromBitmap(NewsImg[0][4], &NewsWidth[0][4], &NewsHeight[0][4], "news5.bmp");
+	NewsImg[0][5] = LoadImageFromBitmap(NewsImg[0][5], &NewsWidth[0][5], &NewsHeight[0][5], "news5.bmp");
+	NewsImg[0][6] = LoadImageFromBitmap(NewsImg[0][6], &NewsWidth[0][6], &NewsHeight[0][6], "news4.bmp");
+	NewsImg[0][7] = LoadImageFromBitmap(NewsImg[0][7], &NewsWidth[0][7], &NewsHeight[0][7], "news3.bmp");
+	NewsImg[0][8] = LoadImageFromBitmap(NewsImg[0][8], &NewsWidth[0][8], &NewsHeight[0][8], "news2.bmp");
+	NewsImg[0][9] = LoadImageFromBitmap(NewsImg[0][9], &NewsWidth[0][9], &NewsHeight[0][9], "news1.bmp");
+
+	//Newspaper Ulti
+	NewsImg[1][0] = LoadImageFromBitmap(NewsImg[1][0], &NewsWidth[1][0], &NewsHeight[1][0], "newsUlti1.bmp");
+	NewsImg[1][1] = LoadImageFromBitmap(NewsImg[1][1], &NewsWidth[1][1], &NewsHeight[1][1], "newsUlti2.bmp");
+	NewsImg[1][2] = LoadImageFromBitmap(NewsImg[1][2], &NewsWidth[1][2], &NewsHeight[1][2], "newsUlti3.bmp");
+	NewsImg[1][3] = LoadImageFromBitmap(NewsImg[1][3], &NewsWidth[1][3], &NewsHeight[1][3], "newsUlti4.bmp");
+	NewsImg[1][4] = LoadImageFromBitmap(NewsImg[1][4], &NewsWidth[1][4], &NewsHeight[1][4], "newsUlti5.bmp");
+	NewsImg[1][5] = LoadImageFromBitmap(NewsImg[1][5], &NewsWidth[1][5], &NewsHeight[1][5], "newsUlti5.bmp");
+	NewsImg[1][6] = LoadImageFromBitmap(NewsImg[1][6], &NewsWidth[1][6], &NewsHeight[1][6], "newsUlti4.bmp");
+	NewsImg[1][7] = LoadImageFromBitmap(NewsImg[1][7], &NewsWidth[1][7], &NewsHeight[1][7], "newsUlti3.bmp");
+	NewsImg[1][8] = LoadImageFromBitmap(NewsImg[1][8], &NewsWidth[1][8], &NewsHeight[1][8], "newsUlti2.bmp");
+	NewsImg[1][9] = LoadImageFromBitmap(NewsImg[1][9], &NewsWidth[1][9], &NewsHeight[1][9], "newsUlti1.bmp");
+
+	//SANDAL Normal
+	NewsImg[2][0] = LoadImageFromBitmap(NewsImg[2][0], &NewsWidth[2][0], &NewsHeight[2][0], "Sandal1.bmp");
+	NewsImg[2][1] = LoadImageFromBitmap(NewsImg[2][1], &NewsWidth[2][1], &NewsHeight[2][1], "Sandal2.bmp");
+	NewsImg[2][2] = LoadImageFromBitmap(NewsImg[2][2], &NewsWidth[2][2], &NewsHeight[2][2], "Sandal3.bmp");
+	NewsImg[2][3] = LoadImageFromBitmap(NewsImg[2][3], &NewsWidth[2][3], &NewsHeight[2][3], "Sandal4.bmp");
+	NewsImg[2][4] = LoadImageFromBitmap(NewsImg[2][4], &NewsWidth[2][4], &NewsHeight[2][4], "Sandal5.bmp");
+	NewsImg[2][5] = LoadImageFromBitmap(NewsImg[2][5], &NewsWidth[2][5], &NewsHeight[2][5], "Sandal5.bmp");
+	NewsImg[2][6] = LoadImageFromBitmap(NewsImg[2][6], &NewsWidth[2][6], &NewsHeight[2][6], "Sandal4.bmp");
+	NewsImg[2][7] = LoadImageFromBitmap(NewsImg[2][7], &NewsWidth[2][7], &NewsHeight[2][7], "Sandal3.bmp");
+	NewsImg[2][8] = LoadImageFromBitmap(NewsImg[2][8], &NewsWidth[2][8], &NewsHeight[2][8], "Sandal2.bmp");
+	NewsImg[2][9] = LoadImageFromBitmap(NewsImg[2][9], &NewsWidth[2][9], &NewsHeight[2][9], "Sandal1.bmp");
+
+	//SANDAL Ulti
+	NewsImg[3][0] = LoadImageFromBitmap(NewsImg[3][0], &NewsWidth[3][0], &NewsHeight[3][0], "SandalUlti1.bmp");
+	NewsImg[3][1] = LoadImageFromBitmap(NewsImg[3][1], &NewsWidth[3][1], &NewsHeight[3][1], "SandalUlti2.bmp");
+	NewsImg[3][2] = LoadImageFromBitmap(NewsImg[3][2], &NewsWidth[3][2], &NewsHeight[3][2], "SandalUlti3.bmp");
+	NewsImg[3][3] = LoadImageFromBitmap(NewsImg[3][3], &NewsWidth[3][3], &NewsHeight[3][3], "SandalUlti4.bmp");
+	NewsImg[3][4] = LoadImageFromBitmap(NewsImg[3][4], &NewsWidth[3][4], &NewsHeight[3][4], "SandalUlti5.bmp");
+	NewsImg[3][5] = LoadImageFromBitmap(NewsImg[3][5], &NewsWidth[3][5], &NewsHeight[3][5], "SandalUlti5.bmp");
+	NewsImg[3][6] = LoadImageFromBitmap(NewsImg[3][6], &NewsWidth[3][6], &NewsHeight[3][6], "SandalUlti4.bmp");
+	NewsImg[3][7] = LoadImageFromBitmap(NewsImg[3][7], &NewsWidth[3][7], &NewsHeight[3][7], "SandalUlti3.bmp");
+	NewsImg[3][8] = LoadImageFromBitmap(NewsImg[3][8], &NewsWidth[3][8], &NewsHeight[3][8], "SandalUlti2.bmp");
+	NewsImg[3][9] = LoadImageFromBitmap(NewsImg[3][9], &NewsWidth[3][9], &NewsHeight[3][9], "SandalUlti1.bmp");
+
+
+
+	//Letters Putih
+	Letters[0][0] = LoadImageFromBitmap(Letters[0][0], &LetterWidth, &LetterHeight, "Letters\\White\\AW.bmp");
+	Letters[0][1] = LoadImageFromBitmap(Letters[0][1], &LetterWidth, &LetterHeight, "Letters\\White\\BW.bmp");
+	Letters[0][2] = LoadImageFromBitmap(Letters[0][2], &LetterWidth, &LetterHeight, "Letters\\White\\CW.bmp");
+	Letters[0][3] = LoadImageFromBitmap(Letters[0][3], &LetterWidth, &LetterHeight, "Letters\\White\\DW.bmp");
+	Letters[0][4] = LoadImageFromBitmap(Letters[0][4], &LetterWidth, &LetterHeight, "Letters\\White\\EW.bmp");
+	Letters[0][5] = LoadImageFromBitmap(Letters[0][5], &LetterWidth, &LetterHeight, "Letters\\White\\FW.bmp");
+	Letters[0][6] = LoadImageFromBitmap(Letters[0][6], &LetterWidth, &LetterHeight, "Letters\\White\\GW.bmp");
+	Letters[0][7] = LoadImageFromBitmap(Letters[0][7], &LetterWidth, &LetterHeight, "Letters\\White\\HW.bmp");
+	Letters[0][8] = LoadImageFromBitmap(Letters[0][8], &LetterWidth, &LetterHeight, "Letters\\White\\IW.bmp");
+	Letters[0][9] = LoadImageFromBitmap(Letters[0][9], &LetterWidth, &LetterHeight, "Letters\\White\\JW.bmp");
+	Letters[0][10] = LoadImageFromBitmap(Letters[0][10], &LetterWidth, &LetterHeight, "Letters\\White\\KW.bmp");
+	Letters[0][11] = LoadImageFromBitmap(Letters[0][11], &LetterWidth, &LetterHeight, "Letters\\White\\LW.bmp");
+	Letters[0][12] = LoadImageFromBitmap(Letters[0][12], &LetterWidth, &LetterHeight, "Letters\\White\\MW.bmp");
+	Letters[0][13] = LoadImageFromBitmap(Letters[0][13], &LetterWidth, &LetterHeight, "Letters\\White\\NW.bmp");
+	Letters[0][14] = LoadImageFromBitmap(Letters[0][14], &LetterWidth, &LetterHeight, "Letters\\White\\OW.bmp");
+	Letters[0][15] = LoadImageFromBitmap(Letters[0][15], &LetterWidth, &LetterHeight, "Letters\\White\\PW.bmp");
+	Letters[0][16] = LoadImageFromBitmap(Letters[0][16], &LetterWidth, &LetterHeight, "Letters\\White\\QW.bmp");
+	Letters[0][17] = LoadImageFromBitmap(Letters[0][17], &LetterWidth, &LetterHeight, "Letters\\White\\RW.bmp");
+	Letters[0][18] = LoadImageFromBitmap(Letters[0][18], &LetterWidth, &LetterHeight, "Letters\\White\\SW.bmp");
+	Letters[0][19] = LoadImageFromBitmap(Letters[0][19], &LetterWidth, &LetterHeight, "Letters\\White\\TW.bmp");
+	Letters[0][20] = LoadImageFromBitmap(Letters[0][20], &LetterWidth, &LetterHeight, "Letters\\White\\UW.bmp");
+	Letters[0][21] = LoadImageFromBitmap(Letters[0][21], &LetterWidth, &LetterHeight, "Letters\\White\\VW.bmp");
+	Letters[0][22] = LoadImageFromBitmap(Letters[0][22], &LetterWidth, &LetterHeight, "Letters\\White\\WW.bmp");
+	Letters[0][23] = LoadImageFromBitmap(Letters[0][23], &LetterWidth, &LetterHeight, "Letters\\White\\XW.bmp");
+	Letters[0][24] = LoadImageFromBitmap(Letters[0][24], &LetterWidth, &LetterHeight, "Letters\\White\\YW.bmp");
+	Letters[0][25] = LoadImageFromBitmap(Letters[0][25], &LetterWidth, &LetterHeight, "Letters\\White\\ZW.bmp");
+
+    //Letters Hijau
+	Letters[1][0] = LoadImageFromBitmap(Letters[1][0], &LetterWidth, &LetterHeight, "Letters\\Green\\AG.bmp");
+	Letters[1][1] = LoadImageFromBitmap(Letters[1][1], &LetterWidth, &LetterHeight, "Letters\\Green\\BG.bmp");
+	Letters[1][2] = LoadImageFromBitmap(Letters[1][2], &LetterWidth, &LetterHeight, "Letters\\Green\\CG.bmp");
+	Letters[1][3] = LoadImageFromBitmap(Letters[1][3], &LetterWidth, &LetterHeight, "Letters\\Green\\DG.bmp");
+	Letters[1][4] = LoadImageFromBitmap(Letters[1][4], &LetterWidth, &LetterHeight, "Letters\\Green\\EG.bmp");
+	Letters[1][5] = LoadImageFromBitmap(Letters[1][5], &LetterWidth, &LetterHeight, "Letters\\Green\\FG.bmp");
+	Letters[1][6] = LoadImageFromBitmap(Letters[1][6], &LetterWidth, &LetterHeight, "Letters\\Green\\GG.bmp");
+	Letters[1][7] = LoadImageFromBitmap(Letters[1][7], &LetterWidth, &LetterHeight, "Letters\\Green\\HG.bmp");
+	Letters[1][8] = LoadImageFromBitmap(Letters[1][8], &LetterWidth, &LetterHeight, "Letters\\Green\\IG.bmp");
+	Letters[1][9] = LoadImageFromBitmap(Letters[1][9], &LetterWidth, &LetterHeight, "Letters\\Green\\JG.bmp");
+	Letters[1][10] = LoadImageFromBitmap(Letters[1][10], &LetterWidth, &LetterHeight, "Letters\\Green\\KG.bmp");
+	Letters[1][11] = LoadImageFromBitmap(Letters[1][11], &LetterWidth, &LetterHeight, "Letters\\Green\\LG.bmp");
+	Letters[1][12] = LoadImageFromBitmap(Letters[1][12], &LetterWidth, &LetterHeight, "Letters\\Green\\MG.bmp");
+	Letters[1][13] = LoadImageFromBitmap(Letters[1][13], &LetterWidth, &LetterHeight, "Letters\\Green\\NG.bmp");
+	Letters[1][14] = LoadImageFromBitmap(Letters[1][14], &LetterWidth, &LetterHeight, "Letters\\Green\\OG.bmp");
+	Letters[1][15] = LoadImageFromBitmap(Letters[1][15], &LetterWidth, &LetterHeight, "Letters\\Green\\PG.bmp");
+	Letters[1][16] = LoadImageFromBitmap(Letters[1][16], &LetterWidth, &LetterHeight, "Letters\\Green\\QG.bmp");
+	Letters[1][17] = LoadImageFromBitmap(Letters[1][17], &LetterWidth, &LetterHeight, "Letters\\Green\\RG.bmp");
+	Letters[1][18] = LoadImageFromBitmap(Letters[1][18], &LetterWidth, &LetterHeight, "Letters\\Green\\SG.bmp");
+	Letters[1][19] = LoadImageFromBitmap(Letters[1][19], &LetterWidth, &LetterHeight, "Letters\\Green\\TG.bmp");
+	Letters[1][20] = LoadImageFromBitmap(Letters[1][20], &LetterWidth, &LetterHeight, "Letters\\Green\\UG.bmp");
+	Letters[1][21] = LoadImageFromBitmap(Letters[1][21], &LetterWidth, &LetterHeight, "Letters\\Green\\VG.bmp");
+	Letters[1][22] = LoadImageFromBitmap(Letters[1][22], &LetterWidth, &LetterHeight, "Letters\\Green\\WG.bmp");
+	Letters[1][23] = LoadImageFromBitmap(Letters[1][23], &LetterWidth, &LetterHeight, "Letters\\Green\\XG.bmp");
+	Letters[1][24] = LoadImageFromBitmap(Letters[1][24], &LetterWidth, &LetterHeight, "Letters\\Green\\YG.bmp");
+	Letters[1][25] = LoadImageFromBitmap(Letters[1][25], &LetterWidth, &LetterHeight, "Letters\\Green\\ZG.bmp");
+
+	//anggap semuanya huruf A dulu untuk percobaan
+	//for(i=1; i<26; i++) Letters[0][i]=Letters[0][0];
+	//for(i=0; i<26; i++) Letters[1][i]=Letters[0][0];
+
+	Hit=false;
+	Atk=false;
+
+	PoseNo=0;
+
+    Wpn();
+
+
+	SprNo = 0;
+
+	TickCount = 0;
+	NTickCount = 0;
+	Speed=5;
+	BM->Width=ScreenWidth;
+	BM->Height=ScreenHeight;
+
+	CopyScreen(Back, Process, ScreenWidth, ScreenHeight);
+	PutImage(RoachImg[PoseNo][SprNo], RoachWidth[PoseNo][SprNo], RoachHeight[PoseNo][SprNo], 900, 430, Process);
+	PutImage(NewsImg[NPoseNo][NSprNo], NewsWidth[NPoseNo][NSprNo], NewsHeight[NPoseNo][NSprNo], -120, 0, Process);
+	CopyScreenToBitmap(Process, BM, ScreenWidth, ScreenHeight);
+	ImgScr->Picture->Bitmap = BM;
+
+	WordIsMoving=false;
+	randomize();
+
+	//Application->OnIdle = MainLoop;
+}
+//---------------------------------------------------------------------------
+__fastcall TFrmPlayLevel::TFrmPlayLevel(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TFrmPlayLevel::FormCreate(TObject *Sender)
+{
+	//untuk Words:
+	int i;
+
+	Countdown=180;
+	Timer->Caption = "3:00";
+	Time->Enabled=true;
+
+	KoneksiDB->Close();
+	KoneksiDB->ConnectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=DatabaseTesttttttttPls.mdb;Persist Security Info=False";
+	KoneksiDB->Open();
+
+	TblUserWord->Connection=KoneksiDB;
+	TblUserWord->TableName="UserWord";
+	TblUserWord->Open();
+
+	TblWord->Connection=KoneksiDB;
+	TblWord->TableName="Word";
+	TblWord->Open();
+
+	QueryWord->Connection=KoneksiDB;
+	QueryWord->Close();
+	QueryWord->SQL->Clear();
+	QueryWord->SQL->Add("Select * From Word Where WordID Like 'W1%' Order By WordID");
+	QueryWord->Open();
+	QueryWord->ExecSQL();
+
+	WordCount=QueryWord->RecordCount;
+	QueryWord->First();
+	//ShowMessage(IntToStr(WordCount));
+	WordsDB=new char * [WordCount];
+	for(i=0; i<WordCount; i++) {
+	 WordsDB[i]=new char [15];
+	 AnsiToCStr(QueryWord->FieldByName("Word")->AsString, WordsDB[i]);
+	 QueryWord->Next();
+	}
+
+
+	PrepareImages();
+	LO<<loCaseInsensitive;
+
+
+	//untuk Time:
+
+	//QueryWord->SQL->Clear();
+	ElapsedTime=0;
+
+
+	QueryWord->Close();
+
+    LevelReset();
+
+}
+//--------------------------------------------------------------------------------
+
+
+String __fastcall TFrmPlayLevel::Wpn(){
+	String wpnID;
+
+	TblUserInfo->Connection=KoneksiDB;
+	TblUserInfo->TableName="UserInfo";
+	TblUserInfo->Open();
+
+	QueryWord->SQL->Clear();
+	QueryWord->SQL->Add("Select * From UserInfo");
+    QueryWord->Open();
+	wpnID = QueryWord->FieldByName("WpnID")->AsString;
+
+	if (wpnID == "WPN01") {
+		NPoseNo=0;
+	}
+	if(wpnID == "WPN02"){
+		NPoseNo=2;
+	}
+
+}
+
+void __fastcall TFrmPlayLevel::StartTimer(){
+	ElapsedTime = 0;
+	Time->Enabled = true;
+	Paused=false;
+}
+
+void __fastcall TFrmPlayLevel::PauseTimer(){
+	Time->Enabled = false;
+	Paused=true;
+}
+
+void __fastcall TFrmPlayLevel::ResumeTimer(){
+	Time->Enabled = true;
+	Paused=false;
+}
+
+void __fastcall TFrmPlayLevel::PauseMessageBox(){
+	PauseTimer();
+
+    int result = Application->MessageBox(L"Do you want to exit out of this level? \n", L"Pause", MB_ICONQUESTION|MB_YESNO);
+    if (result==IDYES){
+		Hide();
+		ElapsedTime=0;
+	}
+	else ResumeTimer();
+
+}
+
+String __fastcall TFrmPlayLevel::IntToTime(int Itime){
+	int Mins;
+	int Secs;
+	String STime;
+	Mins = Itime/60;
+	Secs = Itime%60;
+
+	STime = Format("%2.2d:%2.2d", ARRAYOFCONST((Mins, Secs)));
+	return STime;
+}
+
+void __fastcall TFrmPlayLevel::InsertTimeToDB(){
+	QueryWord->SQL->Clear();
+
+	TblLevels->Connection=KoneksiDB;
+	TblLevels->TableName="Levels";
+	TblLevels->Open();
+
+	QueryWord->SQL->Add("Select Count(*) From Levels Where LevelID = 'L01' And (BestTime = 0)");
+	QueryWord->Open();
+	if(QueryWord->Fields->Fields[0]->AsInteger > 0){
+		QueryWord->SQL->Clear();
+		QueryWord->SQL->Add("Update Levels Set BestTime = :Best Where LevelID = 'L01'");
+		QueryWord->Parameters->ParamByName("Best")->Value = ElapsedTime;
+		QueryWord->ExecSQL();
+	}
+	else{
+		QueryWord->SQL->Clear();
+		QueryWord->SQL->Add("Select BestTime From Levels Where LevelID= 'L01' ");
+		QueryWord->Open();
+		OldBest = QueryWord->FieldByName("BestTime")->AsInteger;
+
+		if (OldBest > ElapsedTime) {
+			QueryWord->SQL->Clear();
+			QueryWord->SQL->Add("Update Levels Set BestTime = :NewBest Where LevelID = 'L01'");
+			QueryWord->Parameters->ParamByName("NewBest")->Value = ElapsedTime;
+			QueryWord->ExecSQL();
+		}
+	}
+
+
+
+	QueryWord->Close();
+}
+
+void _fastcall TFrmPlayLevel::LevelReset(){
+	MusuhBar->Position = 150;
+	UserBar->Position = 100;
+	EnergyBar->Position = 0;
+
+	Countdown=180;
+	Timer->Caption = "3:00";
+	Time->Enabled=true;
+
+	WordsAmt=0;
+	NSprNo=0;
+	SprNo=0;
+	Wpn();
+	PoseNo=0;
+	Dead=false;
+	ElapsedTime=0;
+}
+
+//---------------------------------------------------------------------------------
+void __fastcall TFrmPlayLevel::MainLoop(TObject *Sender, bool &Done){
+	int i;
+
+	CopyScreen(Back, Process, ScreenWidth, ScreenHeight);
+	PutImage(RoachImg[PoseNo][SprNo], RoachWidth[PoseNo][SprNo], RoachHeight[PoseNo][SprNo], 900, 430, Process);
+	//PutImage(NewsImg[0], NewsWidth[0], NewsHeight[0], -114, 0, Process);
+	PutImage(NewsImg[NPoseNo][NSprNo], NewsWidth[NPoseNo][NSprNo], NewsHeight[NPoseNo][NSprNo], -120, 0, Process);
+	//PutImage(RoachAtk[SprNo], RoachWidth[SprNo], RoachHeight[SprNo], 990, 450, Process);
+
+	//words
+	//bool lettercocok[3] = {false, false, false};
+	//ad key = LastKeyPressed dan KeyWasPressed = true;
+
+	AnsiString TesOutput = "";
+	char OutputArray[3];
+
+
+	if (!Hit){
+	 if (WordIsMoving) {
+		   for (int i = 0; i < 3; i++) {
+
+			//Label1->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + TesOutput;
+
+			//ok jd output dh psti msk ke array
+			OutputArray[i] = WordOutput[i];
+
+			TesOutput += OutputArray[i];
+			TesOutput += " ";
+
+			//Label2->Caption=IntToStr(xWord) + " , " + IntToStr(yWord) + " " + WordOutput;
+			//Label1->Caption = IntToStr(i) + ": " + (lettercocok[i] ? "Hijau" : "Putih");
+
+			//PutImage(Letters[ ColorNo[i] ][WordOutput[i] - 97], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+			if (ColorNo[i] >= 0 && ColorNo[i] < 2 && WordOutput[i] >= 'a' && WordOutput[i] <= 'z') {
+				int letterIndex = WordOutput[i] - 97;  // ASCII 'a' to 0, 'b' to 1, etc.
+				// Ensure the letter index is valid
+				if (letterIndex >= 0 && letterIndex < 26) {
+					// Ensure Process is valid
+					if (Process != nullptr) {
+						// Ensure LetterWidth and LetterHeight are positive
+						if (LetterWidth > 0 && LetterHeight > 0) {
+							// Call PutImage only if everything is valid
+							PutImage(Letters[ColorNo[i]][letterIndex], LetterWidth, LetterHeight, xWord + i * LetterWidth, yWord, Process);
+						} else {
+							// Handle invalid dimensions
+							ShowMessage("Invalid LetterWidth or LetterHeight");
+						}
+					} else {
+						ShowMessage("Invalid Process pointer");
+					}
+				} else {
+					ShowMessage("Invalid letter index: " + IntToStr(letterIndex));
+				}
+			} else {
+				ShowMessage("Invalid indices: ColorNo[i] = " + IntToStr(ColorNo[i]) + ", WordOutput[i] = " + IntToStr(WordOutput[i]));
+			}
+
+
+		   }
+		 //for
+
+		//INI FIX BNR JGN HAPUS
+			if (xWord>500) {
+				xWord-=5;
+			}
+			else if (xWord<=500) {
+				WordIsMoving=false;
+				UserBar->Position -= 2;
+			}
+
+	  //if moving
+
+		}
+
+		else{
+
+		   strcpy(WordOutput, WordsDB[ Random(WordCount) ]);
+		   if(MusuhBar->Position >0 && EnergyBar->Position<100 && !Ulti){
+			   WordIsMoving=true;
+			   xWord=ScreenWidth-400;
+			   yWord=300;
+			   HurufKe=0;
+			   if(PoseNo !=3) PoseNo=1;
+			   //PoseNo=1;
+			   Atk=true;
+
+
+			   for(i=0; i<3; i++) ColorNo[i]=0;
+			   LastKeyPressed = NULL;
+
+//				//ini pris test
+//				if(MusuhBar->Position==0 && SprNo == 10 ){
+//				TampilanWinLose->Show();
+//				}
+
+		   }
+
+		   //else if(Ulti)
+
+		}
+	}//end of if (Hit)
+
+	CopyScreenToBitmap(Process, BM, ScreenWidth, ScreenHeight);
+	ImgScr->Picture->Bitmap = BM;
+
+	/*if(Ulti){
+		Label1->Caption = "Press [SPACE]";
+	} else Label1->Caption = ""; */
+
+
+
+	//kecoa idle
+	if(PoseNo==0){
+		if (TickCount %25 == 0) {
+			SprNo = (SprNo+1) % 6;
+		}
+	}
+
+	//if kecoa get hit
+	if(NSprNo==5 && MusuhBar->Position>0){
+		Hurt=true;
+		PoseNo=2;
+		SprNo=0;
+	}
+
+	//trigger animation for kecoa getting hit
+	if(Hurt){
+
+		if(TickCount %11==0){
+			SprNo++;
+			if(SprNo>=8){
+				PoseNo=0;
+				SprNo=0;
+				Hurt=false;
+
+			}
+		}
+	}
+
+	//if hand attacks
+	if (TickCount %Speed == 0 && Hit) {
+		NSprNo++;
+		//if(TickCount %10 == 0 && Hurt){//slower kecoa getting hit animation
+			//PoseNo=2;
+			//SprNo++;
+		//}
+		if (NSprNo>=9) {
+			NSprNo=0;
+			Hit=false;
+		}
+
+	}
+
+
+	if(PoseNo==1){//if kecoa attack
+		if (TickCount %5 == 0 && Atk) {
+			SprNo++;
+
+			if (SprNo>=20) {
+				PoseNo=0;
+				SprNo=0;
+				Atk=false;
+			}
+		}
+	}
+
+	if (MusuhBar->Position==0) {
+		PoseNo=3;
+
+
+	}
+
+	if(PoseNo==3){
+
+		if(TickCount %12 ==0){
+
+			//Label1->Caption = IntToStr(SprNo)+ "  " + IntToStr(PoseNo);
+
+			if(SprNo>=16){
+				SprNo=16;
+				WordIsMoving=false;
+
+				//gbs, ntr dia muncul trs
+//				//ini pris test
+//
+
+			} else SprNo++;
+
+			if (SprNo==16) {
+				Dead=true;
+			}
+
+			//ini pris test
+
+		}
+	}
+
+	if(Dead || ElapsedTime==180 || UserBar->Position==0 ){//kalo uda mati kecoanya (uda end level)
+		TampilanWinLose->DisplayTime(ElapsedTime);
+		TampilanWinLose->TimeCheck = ElapsedTime;
+        TampilanWinLose->HPCheck = UserBar->Position;
+		TampilanWinLose->Show();
+
+		PauseTimer();
+
+		//masukin ke best time (database) kalo lebih dikit dr elapsedtime
+		InsertTimeToDB();
+	}
+
+
+
+    
+
+	Done = false;
+	TickCount++;
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TFrmPlayLevel::FormClose(TObject *Sender, TCloseAction &Action)
+{
+
+	KoneksiDB->Close();
+	//SetScreenResolution(OldScreenWidth, OldScreenHeight);
+}
+//---------------------------------------------------------------------------
+void __fastcall TFrmPlayLevel::FormKeyPress(TObject *Sender, System::WideChar &Key)
+{
+	AnsiString Cari;
+
+
+	switch (Key) {
+		case 27:
+            PauseMessageBox();
+			break;
+
+		case '1':
+			Atk=true;
+			PoseNo=1;
+			break;
+
+		case 32:
+			if(EnergyBar->Position==100 || EnergyBar->Position>0 && !WordIsMoving){
+			   Ulti=true;
+			   //WordIsMoving=false;
+			   Hit=true;
+			   EnergyBar->Position -=5;
+			   if(NPoseNo==0){
+				NPoseNo=1;
+			   }
+			   if(NPoseNo==2){
+				NPoseNo=3;
+			   }
+
+			   Speed= 3;
+			   MusuhBar->Position -= 2;
+			   Hurt=true;
+			   PoseNo=2;
+			   //if(Ulti) Label1->Caption = "Press [SPACE]";
+			   //else  Label1->Caption = "";
+
+
+			}
+			else{
+				Ulti=false;
+				if(NPoseNo==1){
+					NPoseNo=0;
+				}
+				if(NPoseNo==3){
+					NPoseNo=2;
+				}
+
+				Speed=5;
+			}
+			break;
+
+		default:
+			if (Key>='A' && Key<='Z') Key+=32;
+			if (Key>='a' && Key<='z') {
+
+				//biar key bs dipke dluar fucntion keypress
+				LastKeyPressed = Key;
+				KeyWasPressed = true;
+
+				if (WordOutput[HurufKe]==Key) {
+				 ColorNo[HurufKe]=1;
+				 WordInput[HurufKe]=Key;
+				 HurufKe++;
+				}
+				WordInput[HurufKe]=0;
+				if (HurufKe==3) {
+				 //HurufKe=0;
+				 Hit=true;
+				 WordIsMoving=false;
+				 MusuhBar->Position -= 3;
+				 EnergyBar->Position +=10;
+
+
+				}
+
+
+				//Label2->Caption = Key;
+				//Label2->Caption = HurufKe;
+				//QueryWord->SQL->Clear();
+
+				//utk simpan input user ke database
+				if (HurufKe==3) {
+				   Cari=WordInput;
+				   QueryWord->SQL->Clear();
+
+				   QueryWord->SQL->Add("SELECT COUNT(*) FROM UserWord");
+				   QueryWord->SQL->Add("WHERE UserID = '001'");
+				   QueryWord->SQL->Add("AND CollectedWord = '" + Cari + "'");
+				   QueryWord->Open();
+
+				   int count = QueryWord->Fields->Fields[0]->AsInteger;
+
+				   if(count==0){
+					   if (TblWord->Locate("Word", Cari, LO)) {  // Check if word exists in TblWord
+						   String WordID = TblWord->FieldByName("WordID")->AsString;
+						   if (!WordID.IsEmpty()) {
+								// Check if the word is already collected by the user
+								if (!TblUserWord->Locate("CollectedWord", Cari, LO)) {
+									TblUserWord->Append();
+									TblUserWord->FieldByName("UserID")->AsString = "001";  // UserID (ensure "001" exists)
+									TblUserWord->FieldByName("CollectedWord")->AsString = Cari;
+									TblUserWord->FieldByName("WordID")->AsString = WordID;
+									TblUserWord->Post();
+									//ShowMessage("Word added successfully.");
+								}
+						   }
+
+					   }
+
+				   } //else ShowMessage("queryword field not found");
+
+				   QueryWord->Close();
+				   WordsAmt++;
+				}
+
+
+			}
+	}
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmPlayLevel::TimeTimer(TObject *Sender)
+{
+	if(Countdown<=0){
+		Time->Enabled=false;
+		Timer->Caption = "00:00";
+		return;
+	}
+
+	Countdown--;
+	ElapsedTime++;
+
+	//int Mins = Countdown/60;
+	//int Secs = Countdown % 60;
+
+	//Label2->Caption=IntToStr(ElapsedTime) + "  " + IntToStr(WordsAmt) + " " + IntToStr(UserBar->Position);
+
+
+	Timer->Caption = IntToTime(Countdown);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmPlayLevel::FormHide(TObject *Sender)
+{
+	LevelReset();
+	UserBar->Position = 100;
+
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmPlayLevel::FormShow(TObject *Sender)
+{
+    LevelReset();
+}
+//---------------------------------------------------------------------------
