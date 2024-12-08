@@ -4,12 +4,12 @@
 #pragma hdrstop
 
 #include "FrmWord.h"
-#include "FormMain.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TFrmWords *FrmWords;
-TFrmMain *FrmMain;
+
 //---------------------------------------------------------------------------
 __fastcall TFrmWords::TFrmWords(TComponent* Owner)
 	: TForm(Owner)
@@ -18,14 +18,241 @@ __fastcall TFrmWords::TFrmWords(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TFrmWords::XButtonImgClick(TObject *Sender)
 {
-	if (!FrmMain) {
+	/*if (!FrmMain) {
 		FrmMain = new TFrmMain(this);
-	}
+	}                */
 	FrmMain->Show();
 	//FrmMain->SetFocus();
 
 	if(FrmWords && FrmWords->Visible){ //utk cek formny open / g (visible itu true/false)
 		FrmWords->Close();
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TFrmWords::FormCreate(TObject *Sender)
+{
+
+	TxtWords->Clear();
+	KoneksiDB->Close();
+    KoneksiDB->ConnectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=DatabaseTesttttttttPls.mdb;Persist Security Info=False";
+	KoneksiDB->Open();
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmWords::FormClose(TObject *Sender, TCloseAction &Action)
+{
+    QueryWord->Close();
+	KoneksiDB->Close();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TFrmWords::FormShow(TObject *Sender)
+{
+	//Nomor = 1;
+	TblWord->Connection=KoneksiDB;
+	TblWord->TableName="Word";
+	TblWord->Open();
+
+	QueryWord->Connection=KoneksiDB;
+	QueryWord->Close();
+	QueryWord->SQL->Clear();
+
+	QueryWord->SQL->Add("SELECT UserWord.CollectedWord, Word.Phonetics, ");
+	QueryWord->SQL->Add("Word.Meaning_1, Word.Meaning_2, Word.Meaning_3, ");
+	QueryWord->SQL->Add("Word.Meaning_4, Word.Meaning_5, Word.Meaning_6 ");
+	QueryWord->SQL->Add("FROM UserWord ");
+	QueryWord->SQL->Add("INNER JOIN Word ON UserWord.WordID = Word.WordID ");
+	//QueryWord->SQL->Add("WHERE UserWord.UserID = '001'");
+
+	QueryWord->Open();
+
+	TxtWords->Clear();
+	//if(QueryWord->Active && !QueryWord->Eof	){
+		while(!QueryWord->Eof){
+
+			CollectedWord = QueryWord->FieldByName("CollectedWord")->AsString;
+			Phonetics = QueryWord->FieldByName("Phonetics")->AsString;
+			Meaning1 = QueryWord->FieldByName("Meaning_1")->AsString;
+			Meaning2 = QueryWord->FieldByName("Meaning_2")->AsString;
+			Meaning3 = QueryWord->FieldByName("Meaning_3")->AsString;
+			Meaning4 = QueryWord->FieldByName("Meaning_4")->AsString;
+			Meaning5 = QueryWord->FieldByName("Meaning_5")->AsString;
+			Meaning6 = QueryWord->FieldByName("Meaning_6")->AsString;
+
+			Formatted = Formatting(CollectedWord, Phonetics, Meaning1, Meaning2, Meaning3, Meaning4, Meaning5, Meaning6);
+			//Nomor++;
+			//Formatted += "\n";
+
+			TxtWords->Lines->Add(Formatted);
+
+			QueryWord->Next();
+
+		}
+	//}
+
+	QueryWord->Close();
+}
+//---------------------------------------------------------------------------
+
+
+UnicodeString __fastcall TFrmWords::Formatting(UnicodeString Wrd, UnicodeString Phn, UnicodeString Mn1, UnicodeString Mn2, UnicodeString Mn3, UnicodeString Mn4 , UnicodeString Mn5, UnicodeString Mn6){
+	UnicodeString out = Wrd + " " + Phn + "\n";
+	if(!Mn1.IsEmpty()) out += Mn1 + "\n";
+	if(!Mn2.IsEmpty()) out += Mn2 + "\n";
+	if(!Mn3.IsEmpty()) out += Mn3 + "\n";
+	if(!Mn4.IsEmpty()) out += Mn4 + "\n";
+	if(!Mn5.IsEmpty()) out += Mn5 + "\n";
+	if(!Mn6.IsEmpty()) out += Mn6 + "\n";
+
+    return out;
+}
+
+void __fastcall TFrmWords::SearchClick(TObject *Sender)
+{
+	//QueryWord->Connection=KoneksiDB;
+	SearchWord = TxtSearch->Text;
+
+	QueryWord->Close();
+	QueryWord->SQL->Clear();
+	QueryWord->Parameters->Clear();
+
+	if(SearchWord.IsEmpty()){
+		ShowMessage("Please enter a search term.");
+
+		return;
+	}
+	else{
+		QueryWord->SQL->Add("SELECT UserWord.CollectedWord, Word.Phonetics, ");
+		QueryWord->SQL->Add("Word.Meaning_1, Word.Meaning_2, Word.Meaning_3, ");
+		QueryWord->SQL->Add("Word.Meaning_4, Word.Meaning_5, Word.Meaning_6 ");
+		QueryWord->SQL->Add("FROM UserWord ");
+		QueryWord->SQL->Add("INNER JOIN Word ON UserWord.WordID = Word.WordID ");
+		QueryWord->SQL->Add("WHERE (UserWord.CollectedWord LIKE :SearchWord ");
+		QueryWord->SQL->Add("OR Word.Meaning_1 LIKE :SearchWord ");
+		QueryWord->SQL->Add("OR Word.Meaning_2 LIKE :SearchWord ");
+		QueryWord->SQL->Add("OR Word.Meaning_3 LIKE :SearchWord ");
+		QueryWord->SQL->Add("OR Word.Meaning_4 LIKE :SearchWord ");
+		QueryWord->SQL->Add("OR Word.Meaning_5 LIKE :SearchWord ");
+		QueryWord->SQL->Add("OR Word.Meaning_6 LIKE :SearchWord)");
+
+
+		QueryWord->Parameters->ParamByName("SearchWord")->Value = "%" + SearchWord + "%";
+
+		QueryWord->Open();
+
+		TxtWords->Clear();
+
+		while(!QueryWord->Eof){
+			CollectedWord = QueryWord->FieldByName("CollectedWord")->AsString;
+			Phonetics = QueryWord->FieldByName("Phonetics")->AsString;
+			Meaning1 = QueryWord->FieldByName("Meaning_1")->AsString;
+			Meaning2 = QueryWord->FieldByName("Meaning_2")->AsString;
+			Meaning3 = QueryWord->FieldByName("Meaning_3")->AsString;
+			Meaning4 = QueryWord->FieldByName("Meaning_4")->AsString;
+			Meaning5 = QueryWord->FieldByName("Meaning_5")->AsString;
+			Meaning6 = QueryWord->FieldByName("Meaning_6")->AsString;
+
+			Formatted = Formatting(CollectedWord, Phonetics, Meaning1, Meaning2, Meaning3, Meaning4, Meaning5, Meaning6);
+
+			TxtWords->Lines->Add(Formatted);
+
+			QueryWord->Next();
+		}
+    }
+
+
+	QueryWord->Close();
+
+
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmWords::TxtSearchKeyPress(TObject *Sender, System::WideChar &Key)
+
+{
+	switch(Key){
+		case 13:
+            SearchClick(this);
+
+	}
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TFrmWords::BtnAllClick(TObject *Sender)
+{
+	QueryWord->SQL->Clear();
+
+	QueryWord->SQL->Add("SELECT UserWord.CollectedWord, Word.Phonetics, ");
+	QueryWord->SQL->Add("Word.Meaning_1, Word.Meaning_2, Word.Meaning_3, ");
+	QueryWord->SQL->Add("Word.Meaning_4, Word.Meaning_5, Word.Meaning_6 ");
+	QueryWord->SQL->Add("FROM UserWord ");
+	QueryWord->SQL->Add("INNER JOIN Word ON UserWord.WordID = Word.WordID ");
+
+	QueryWord->Open();
+
+	TxtWords->Clear();
+	while(!QueryWord->Eof){
+
+		CollectedWord = QueryWord->FieldByName("CollectedWord")->AsString;
+		Phonetics = QueryWord->FieldByName("Phonetics")->AsString;
+		Meaning1 = QueryWord->FieldByName("Meaning_1")->AsString;
+		Meaning2 = QueryWord->FieldByName("Meaning_2")->AsString;
+		Meaning3 = QueryWord->FieldByName("Meaning_3")->AsString;
+		Meaning4 = QueryWord->FieldByName("Meaning_4")->AsString;
+		Meaning5 = QueryWord->FieldByName("Meaning_5")->AsString;
+		Meaning6 = QueryWord->FieldByName("Meaning_6")->AsString;
+
+		Formatted = Formatting(CollectedWord, Phonetics, Meaning1, Meaning2, Meaning3, Meaning4, Meaning5, Meaning6);
+		//Nomor++;
+		//Formatted += "\n";
+
+		TxtWords->Lines->Add(Formatted);
+
+		QueryWord->Next();
+
+	}
+
+	QueryWord->Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmWords::Btn1Click(TObject *Sender)
+{
+    QueryWord->SQL->Clear();
+
+	QueryWord->SQL->Add("SELECT UserWord.CollectedWord, Word.Phonetics, ");
+	QueryWord->SQL->Add("Word.Meaning_1, Word.Meaning_2, Word.Meaning_3, ");
+	QueryWord->SQL->Add("Word.Meaning_4, Word.Meaning_5, Word.Meaning_6 ");
+	QueryWord->SQL->Add("FROM UserWord ");
+	QueryWord->SQL->Add("INNER JOIN Word ON UserWord.WordID = Word.WordID ");
+	QueryWord->SQL->Add("WHERE UserWord.WordID Like 'W1%' Order By UserWord.WordID");
+
+	QueryWord->Open();
+	TxtWords->Clear();
+
+    while(!QueryWord->Eof){
+
+			CollectedWord = QueryWord->FieldByName("CollectedWord")->AsString;
+			Phonetics = QueryWord->FieldByName("Phonetics")->AsString;
+			Meaning1 = QueryWord->FieldByName("Meaning_1")->AsString;
+			Meaning2 = QueryWord->FieldByName("Meaning_2")->AsString;
+			Meaning3 = QueryWord->FieldByName("Meaning_3")->AsString;
+			Meaning4 = QueryWord->FieldByName("Meaning_4")->AsString;
+			Meaning5 = QueryWord->FieldByName("Meaning_5")->AsString;
+			Meaning6 = QueryWord->FieldByName("Meaning_6")->AsString;
+
+			Formatted = Formatting(CollectedWord, Phonetics, Meaning1, Meaning2, Meaning3, Meaning4, Meaning5, Meaning6);
+			//Nomor++;
+			//Formatted += "\n";
+
+			TxtWords->Lines->Add(Formatted);
+
+			QueryWord->Next();
+
 	}
 }
 //---------------------------------------------------------------------------
