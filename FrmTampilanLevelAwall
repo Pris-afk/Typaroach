@@ -24,7 +24,7 @@ void __fastcall TFrmTampilanLevelAwal::PlayButtonClick(TObject *Sender)
 /*if (!FrmPlayLevel) {
 		FrmPlayLevel = new TFrmPlayLevel(this);
 	}   */
-	//FrmTampilanLevelAwal->Hide();
+	Hide();
 	FrmPlayLevel->Show();
 	FrmPlayLevel->PrepareImages();
 	//FrmPlayLevel->MainLoop(this, test);
@@ -47,3 +47,84 @@ void __fastcall TFrmTampilanLevelAwal::PlayButtonClick(TObject *Sender)
 
 }
 //---------------------------------------------------------------------------
+
+
+void __fastcall TFrmTampilanLevelAwal::FormCreate(TObject *Sender)
+{
+	KoneksiDB->Close();
+	KoneksiDB->ConnectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=DatabaseTesttttttttPls.mdb;Persist Security Info=False";
+	KoneksiDB->Open();
+
+	KecoaGmbr->Picture->LoadFromFile("LevelAssets\\KecoaPfp.png");
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmTampilanLevelAwal::FormClose(TObject *Sender, TCloseAction &Action)
+
+{
+	KoneksiDB->Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFrmTampilanLevelAwal::FormShow(TObject *Sender)
+{
+    TblLevels->Connection=KoneksiDB;
+	TblLevels->TableName="Levels";
+	TblLevels->Open();
+	//uda ok dibawah ini
+	QueryWord->SQL->Clear();
+
+	QueryWord->SQL->Add("Select * From Levels Where LevelID = 'L01'");
+	QueryWord->Open();
+
+	BestTime = QueryWord->FieldByName("BestTime")->AsInteger;
+	BTime->Caption = FrmPlayLevel->IntToTime(BestTime);
+
+	//set stars
+	QueryWord->SQL->Clear();
+
+	QueryWord->SQL->Add("Select Stars From Levels Where LevelID = 'L01'");
+	QueryWord->Open();
+	StarsAmt = QueryWord->FieldByName("Stars")->AsInteger;
+
+	switch(StarsAmt){
+		case 0:
+			break;
+
+		case 1:
+			Stars->Picture->LoadFromFile("LevelAssets\\1star.png");
+			break;
+		case 2:
+			Stars->Picture->LoadFromFile("LevelAssets\\2star.png");
+			break;
+		case 3:
+            Stars->Picture->LoadFromFile("LevelAssets\\3star.png");
+			break;
+
+	}
+
+
+
+
+	TblUserWords->Connection=KoneksiDB;
+	TblUserWords->TableName="UserWord";
+	TblUserWords->Open();
+
+	QueryWord->SQL->Clear();
+
+
+	//ud ok bawah ini
+	QueryWord->SQL->Add("Select * From UserWord Where WordID Like 'W1%'");
+	QueryWord->Open();
+	QueryWord->ExecSQL();
+    words = QueryWord->RecordCount;
+
+	CollWords->Caption = IntToStr(words);
+
+
+
+	QueryWord->Close();
+}
+//---------------------------------------------------------------------------
+
