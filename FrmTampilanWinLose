@@ -1,0 +1,252 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "FrmTampilanWinLose.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TTampilanWinLose *TampilanWinLose;
+//---------------------------------------------------------------------------
+__fastcall TTampilanWinLose::TTampilanWinLose(TComponent* Owner)
+	: TForm(Owner)
+{
+
+	BackWidth = 878;
+	BackHeight = 800;
+	ScreenWidth = 878;
+	ScreenHeight = 800;
+	CurrentBytePerPixel = 3;
+	CurrentBitPerPixel = 24;
+	CurrentPixelFormat = pf24bit;
+
+	ImgScr->Left = 0;
+	ImgScr->Width = ScreenWidth;
+	ImgScr->Height = ScreenHeight;
+
+	BM = new Graphics::TBitmap;
+	//Back = AllocateObjectMemory(Back, BackWidth * BackHeight * CurrentBytePerPixel);
+	Process = AllocateObjectMemory(Process, ScreenWidth * ScreenHeight * CurrentBytePerPixel);
+
+	//Loading Img assets
+
+	//win
+	WinOrLose[0][0] = LoadImageFromBitmap(WinOrLose[0][0], &WinOrLoseWidth[0][0], &WinOrLoseHeight[0][0], "LevelAssets\\WinFix1.bmp"); //1 0 0
+	WinOrLose[0][1] = LoadImageFromBitmap(WinOrLose[0][1], &WinOrLoseWidth[0][1], &WinOrLoseHeight[0][1], "LevelAssets\\WinFix2.bmp"); //1 1 0
+	WinOrLose[0][2] = LoadImageFromBitmap(WinOrLose[0][2], &WinOrLoseWidth[0][2], &WinOrLoseHeight[0][2], "LevelAssets\\WinFix3.bmp"); //1 1 1
+	WinOrLose[0][3] = LoadImageFromBitmap(WinOrLose[0][3], &WinOrLoseWidth[0][3], &WinOrLoseHeight[0][3], "LevelAssets\\WinFix4.bmp"); //1 0 1
+
+	//lose
+	WinOrLose[1][0] = LoadImageFromBitmap(WinOrLose[1][0], &WinOrLoseWidth[1][0], &WinOrLoseHeight[1][0], "LevelAssets\\LoseFix.bmp");
+
+	PoseNo=0;
+	SprNo =0;
+
+	TickCount = 0;
+
+	BM->Width=ScreenWidth;
+	BM->Height=ScreenHeight;
+
+	CopyScreen(Back, Process, ScreenWidth, ScreenHeight);
+	PutImage(WinOrLose[0][0], WinOrLoseWidth[0][0], WinOrLoseHeight[0][0], 0, 0, Process);
+	CopyScreenToBitmap(Process, BM, ScreenWidth, ScreenHeight);
+	ImgScr->Picture->Bitmap = BM;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TTampilanWinLose::FormClose(TObject *Sender, TCloseAction &Action)
+{
+	FrmPlayLevel->Hide();
+	FrmPlayLevel->LevelReset();
+	//FrmTampilanLevelAwal->Hide();
+	KoneksiDB->Close();
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TTampilanWinLose::DisplayPic(int i, int j){
+	CopyScreen(Back, Process, ScreenWidth, ScreenHeight);
+	PutImage(WinOrLose[i][j], WinOrLoseWidth[i][j], WinOrLoseHeight[i][j], 0, 0, Process);
+	CopyScreenToBitmap(Process, BM, ScreenWidth, ScreenHeight);
+	ImgScr->Picture->Bitmap = BM;
+}
+
+void __fastcall TTampilanWinLose::UpdateSC(int k){
+	KoneksiDB->Open();
+
+	TblUserInfo->Connection=KoneksiDB;
+	TblUserInfo->TableName="UserInfo";
+	TblUserInfo->Open();
+
+	QueryWord->SQL->Clear();
+	QueryWord->SQL->Add("Select * From UserInfo Where UserID = '001'");
+	QueryWord->Open();
+
+	SC = QueryWord->FieldByName("SugarCube")->AsInteger;
+	SC += k;
+	//+ Sugar Cube
+
+    QueryWord->SQL->Clear();
+	QueryWord->SQL->Add("Update UserInfo Set SugarCube = :SugarC Where UserID = '001'");
+	QueryWord->Parameters->ParamByName("SugarC")->Value = SC;
+	QueryWord->ExecSQL();
+
+	QueryWord->Close();
+}
+
+//-----------------------------------------------------------------------------
+void __fastcall TTampilanWinLose::FormCreate(TObject *Sender)
+{
+	KoneksiDB->Close();
+	KoneksiDB->ConnectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=DatabaseTesttttttttPls.mdb;Persist Security Info=False";
+	LvlTime= FrmPlayLevel->ElapsedTime;
+
+    //upload stars info ke database disini
+	//utk form tampilan awal
+
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TTampilanWinLose::DisplayTime(int value){
+	//ini dipake di form FrmPlaylevels utk tampilin elapsed time nya
+	LvlTime= FrmPlayLevel->ElapsedTime;
+
+	//CurTime->Caption = Format("%2.2d:%2.2d", ARRAYOFCONST((CurMins, CurSecs)));;
+	CurTime->Caption = FrmPlayLevel->IntToTime(LvlTime);
+
+	TblLevels->Connection=KoneksiDB;
+	TblLevels->TableName="Levels";
+	TblLevels->Open();
+
+	QueryWord->SQL->Clear();
+
+	QueryWord->SQL->Add("Select *From Levels Where LevelID = 'L01'");
+	QueryWord->Open();
+
+	BTime = QueryWord->FieldByName("BestTime")->AsInteger;
+	BestTime->Caption = FrmPlayLevel->IntToTime(BTime);
+
+	QueryWord->Close();
+
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTampilanWinLose::FormShow(TObject *Sender)
+{
+	if (FrmPlayLevel->Dead) {  //1 star: kecoa mati
+		Won=true;
+		Panel1->Color = clOlive;
+		SCLabel->Caption = "+ 5";
+		UpdateSC(5);
+		stars = 1;
+		/*QueryWord->SQL->Claer();
+		QueryWord->SQL->Add("Select * From UserInfo");
+		SC = QueryWord->FieldByName("SugarCube")->Value;
+		SC += 5;
+		//+ Sugar Cube
+
+		QueryWord->SQL->Add("Update UserInfo Set SugarCube = :SugarC Where UserID = 001")
+		QueryWord->Parameters->ParamByName("SugarC") = SC; */
+
+		if(HPCheck == 100 && TimeCheck < 60){ //3 star: kecoa mati dan hp msh full
+			DisplayPic(0, 2);
+			Won=true;
+			SCLabel->Caption = "+ 10";
+			UpdateSC(5);//add 5 more if 3 stars
+			stars =3;
+		}
+
+		if (FrmPlayLevel->Dead && HPCheck < 100 && TimeCheck < 60) { //2 star
+			DisplayPic(0, 1);
+			Won=true;
+			SCLabel->Caption = "+ 7";
+			UpdateSC(2); //add 2 more if 2 stars
+			stars = 2;
+
+		}
+
+		if(FrmPlayLevel->Dead && HPCheck == 100 && TimeCheck > 60){//2 star
+			DisplayPic(0, 3);
+			Won=true;
+			SCLabel->Caption = "+ 7";
+			UpdateSC(2);//add 2 more if 2 stars
+			stars =2;
+		}
+	}
+
+	if(TimeCheck==180 || HPCheck==0){ //no star: kalah
+		DisplayPic(1, 0);
+		Won=false;
+		SCLabel->Caption = "0";
+		stars = 0;
+		Panel1->Color = clMaroon;
+	}
+
+	UpdateStars();
+	UpdateStatus();
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TTampilanWinLose::UpdateStars(){
+	QueryWord->SQL->Clear();
+
+	TblLevels->Connection=KoneksiDB;
+	TblLevels->TableName="Levels";
+	TblLevels->Open();
+
+	QueryWord->SQL->Add("Select Count(*) From Levels Where LevelID = 'L01' And (Stars = 0)");
+	QueryWord->Open();
+	if(QueryWord->Fields->Fields[0]->AsInteger > 0){
+		QueryWord->SQL->Clear();
+		QueryWord->SQL->Add("Update Levels Set Stars = :Stars Where LevelID = 'L01'");
+		QueryWord->Parameters->ParamByName("Stars")->Value = stars;
+		QueryWord->ExecSQL();
+	}
+    	else{
+		QueryWord->SQL->Clear();
+		QueryWord->SQL->Add("Select Stars From Levels Where LevelID= 'L01' ");
+		QueryWord->Open();
+		OldStars = QueryWord->FieldByName("Stars")->AsInteger;
+
+		if (OldStars< stars) {
+			QueryWord->SQL->Clear();
+			QueryWord->SQL->Add("Update Levels Set Stars = :NewStars Where LevelID = 'L01'");
+			QueryWord->Parameters->ParamByName("NewStars")->Value = stars;
+			QueryWord->ExecSQL();
+		}
+	}
+
+	QueryWord->Close();
+}
+
+void __fastcall TTampilanWinLose::UpdateStatus(){
+    TblLevels->Connection=KoneksiDB;
+	TblLevels->TableName="Levels";
+	TblLevels->Open();
+
+	QueryWord->SQL->Clear();
+	QueryWord->SQL->Add("Update Levels Set Status = True Where LevelID = 'L02'");
+	QueryWord->ExecSQL();
+
+	QueryWord->Close();
+}
+
+void __fastcall TTampilanWinLose::BackBtnClick(TObject *Sender)
+{
+//	Close();
+//	FrmLevels->Show();
+//	FrmTampilanLevelAwal->Show();
+}
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTampilanWinLose::Panel1Click(TObject *Sender)
+{
+	TampilanWinLose->Close();
+	FrmLevels->Show();
+	FrmTampilanLevelAwal->Show();
+}
+//---------------------------------------------------------------------------
